@@ -116,8 +116,8 @@ namespace FitnessCenterv2.Controllers
 
         public ActionResult ForgotPassword() {
 
-            GMailer.GmailUsername = "kaanpc@gmail.com";
-            GMailer.GmailPassword = "Witchkingz!148";
+            GMailer.GmailUsername = "" ;
+            GMailer.GmailPassword = " ";
 
             GMailer mailer = new GMailer();
             mailer.ToEmail = "biryolkaan@gmail.com";
