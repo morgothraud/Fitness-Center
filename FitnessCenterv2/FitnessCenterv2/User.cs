@@ -14,11 +14,20 @@ namespace FitnessCenterv2
     
     public partial class User
     {
+        public User()
+        {
+            this.Reports = new HashSet<Report>();
+            this.Reports1 = new HashSet<Report>();
+        }
+    
         public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EMail { get; set; }
         public string Password { get; set; }
         public string Role { get; set; }
+    
+        public virtual ICollection<Report> Reports { get; set; }
+        public virtual ICollection<Report> Reports1 { get; set; }
     }
 }

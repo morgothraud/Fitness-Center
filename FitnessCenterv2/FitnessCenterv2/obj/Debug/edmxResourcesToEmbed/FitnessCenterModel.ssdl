@@ -42,6 +42,17 @@
     <Property Name="Salary" Type="decimal" Precision="18" Scale="0" />
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="SenderID" />
+      <PropertyRef Name="ReceiverID" />
+    </Key>
+    <Property Name="SenderID" Type="int" Nullable="false" />
+    <Property Name="ReceiverID" Type="int" Nullable="false" />
+    <Property Name="Subject" Type="nvarchar" MaxLength="50" />
+    <Property Name="Body" Type="nvarchar" MaxLength="50" />
+    <Property Name="SendDate" Type="datetime" />
+  </EntityType>
   <EntityType Name="Staff">
     <Key>
       <PropertyRef Name="ID" />
@@ -108,10 +119,35 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Report_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="SenderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Report_User1">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="ReceiverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="FitnessCenterModelStoreContainer">
     <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trainer" EntityType="Self.Trainer" Schema="dbo" store:Type="Tables" />
@@ -119,6 +155,14 @@
     <AssociationSet Name="FK_Customer_Trainer" Association="Self.FK_Customer_Trainer">
       <End Role="Trainer" EntitySet="Trainer" />
       <End Role="Customer" EntitySet="Customer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="Report" EntitySet="Report" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
+      <End Role="User" EntitySet="User" />
+      <End Role="Report" EntitySet="Report" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

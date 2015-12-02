@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessCenterv2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -111,6 +112,21 @@ namespace FitnessCenterv2.Controllers
 
             Session.Clear();
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ForgotPassword() {
+
+            GMailer.GmailUsername = "kaanpc@gmail.com";
+            GMailer.GmailPassword = "Witchkingz!148";
+
+            GMailer mailer = new GMailer();
+            mailer.ToEmail = "biryolkaan@gmail.com";
+            mailer.Subject = "Verify your email id";
+            mailer.Body = "Thanks for Registering your account.<br> please verify your email id by clicking the link <br> <a href='youraccount.com/verifycode=12323232'>verify</a>";
+            mailer.IsHtml = true;
+            mailer.Send();
+            return View();
+
         }
     }
 }

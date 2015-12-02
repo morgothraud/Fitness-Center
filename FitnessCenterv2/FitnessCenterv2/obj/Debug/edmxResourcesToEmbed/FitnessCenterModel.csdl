@@ -97,6 +97,8 @@
     <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_User" FromRole="User" ToRole="Report" />
+    <NavigationProperty Name="Reports1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="User" ToRole="Report" />
   </EntityType>
   <Association Name="FK_Customer_Trainer">
     <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
@@ -122,5 +124,51 @@
       <End Role="Trainer" EntitySet="Trainers" />
       <End Role="Customer" EntitySet="Customers" />
     </AssociationSet>
+    <EntitySet Name="Reports" EntityType="FitnessCenterModel.Report" />
+    <AssociationSet Name="FK_Report_User" Association="FitnessCenterModel.FK_Report_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Report_User1" Association="FitnessCenterModel.FK_Report_User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="Report">
+    <Key>
+      <PropertyRef Name="SenderID" />
+      <PropertyRef Name="ReceiverID" />
+    </Key>
+    <Property Name="SenderID" Type="Int32" Nullable="false" />
+    <Property Name="ReceiverID" Type="Int32" Nullable="false" />
+    <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Body" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SendDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_Report_User" FromRole="Report" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="Report" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Report_User">
+    <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
+    <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="SenderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Report_User1">
+    <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
+    <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="ReceiverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

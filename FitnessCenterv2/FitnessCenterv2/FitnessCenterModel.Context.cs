@@ -32,5 +32,6 @@ namespace FitnessCenterv2
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Trainer> Trainers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Report> Reports { get; set; }
     }
 }

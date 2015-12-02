@@ -13,6 +13,9 @@
         <EntityTypeShape EntityType="FitnessCenterModel.Trainer" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="FitnessCenterModel.User" Width="1.5" PointX="4.75" PointY="6.75" IsExpanded="true" />
         <AssociationConnector Association="FitnessCenterModel.FK_Customer_Trainer" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Report" Width="1.5" PointX="7" PointY="6.875" />
+        <AssociationConnector Association="FitnessCenterModel.FK_Report_User" />
+        <AssociationConnector Association="FitnessCenterModel.FK_Report_User1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

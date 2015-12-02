@@ -53,6 +53,8 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult EditStaff(Staff s)
         {
+
+            //USERDA UPDATELE
             if (ModelState.IsValid)
             {
                 var toBeUpdated = db.Staffs.Find(s.ID);
@@ -75,6 +77,8 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult DeleteStaff(Staff s)
         {
+
+            //USER DANDA SİL
             if (ModelState.IsValid)
             {
                 db.Staffs.Attach(s);
