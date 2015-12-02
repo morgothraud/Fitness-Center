@@ -1,10 +1,13 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "LoggedInCustomer";
 }
 
- @if (Session["UserID"] != null) { 
- 
-     <h4>Welcome @Session["FirstName"].ToString()</h4>
- }
+@if (Session["UserID"] != null)
+{
+
+    <h4>Welcome @Session["FirstName"].ToString()</h4>
+    @Html.ActionLink("LogOut","Login");
+
+}
+
 

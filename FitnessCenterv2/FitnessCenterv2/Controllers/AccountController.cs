@@ -74,7 +74,16 @@ namespace FitnessCenterv2.Controllers
                 {
                     Session["UserID"] = user.UserID.ToString();
                     Session["FirstName"] = user.FirstName.ToString();
-                    return RedirectToAction("LoggedInManager");
+                    return RedirectToAction("Index","Manager"); 
+                }
+                else if (user.Role == "Trainer")
+                {
+
+
+                }
+                else if (user.Role == "Staff")
+                {
+
                 }
             }
             else
@@ -96,6 +105,12 @@ namespace FitnessCenterv2.Controllers
             if (Session["UserID"] != null)
                 return View(db.Trainers.ToList());
             else return RedirectToAction("Login");
+        }
+
+        public ActionResult LogOut() {
+
+            Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
