@@ -99,6 +99,8 @@
     <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_User" FromRole="User" ToRole="Report" />
     <NavigationProperty Name="Reports1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="User" ToRole="Report" />
+    <NavigationProperty Name="PassResets" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
+    <NavigationProperty Name="PassResets1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
   </EntityType>
   <Association Name="FK_Customer_Trainer">
     <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
@@ -132,6 +134,15 @@
     <AssociationSet Name="FK_Report_User1" Association="FitnessCenterModel.FK_Report_User1">
       <End Role="User" EntitySet="Users" />
       <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+    <EntitySet Name="PassResets" EntityType="FitnessCenterModel.PassReset" />
+    <AssociationSet Name="FK_PassReset_User" Association="FitnessCenterModel.FK_PassReset_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PassReset" EntitySet="PassResets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PassReset_User1" Association="FitnessCenterModel.FK_PassReset_User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PassReset" EntitySet="PassResets" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Report">
@@ -168,6 +179,42 @@
       </Principal>
       <Dependent Role="Report">
         <PropertyRef Name="ReceiverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="PassReset">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="Int32" annotation:StoreGeneratedPattern="None" />
+    <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="PassReset" ToRole="User" />
+    <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="PassReset" ToRole="User" />
+    <Property Name="AutID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="isAvaliable" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK_PassReset_User">
+    <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="PassReset">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PassReset_User1">
+    <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="PassReset">
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
