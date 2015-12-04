@@ -150,7 +150,11 @@
     <Compile Include="Manager.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\GMailer.cs" />
+    <Compile Include="PassReset.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
@@ -191,8 +195,8 @@
     </Content>
     <Content Include="FitnessCenterModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
       <LastGenOutput>FitnessCenterModel.cs</LastGenOutput>
+      <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -235,6 +239,9 @@
     <Content Include="Views\Manager\ManageEquipment.cshtml" />
     <Content Include="Views\Manager\EditEquipment.cshtml" />
     <Content Include="Views\Manager\DeleteEquipment.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

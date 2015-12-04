@@ -23,7 +23,7 @@ namespace FitnessCenterv2.Models
         static GMailer()
         {
             GmailHost = "smtp.gmail.com";
-            GmailPort = 25;  
+            GmailPort = 587;  
             GmailSSL = true;
         }
 
