@@ -118,18 +118,11 @@ namespace FitnessCenterv2.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-<<<<<<< HEAD
-        public ActionResult ForgotPassword() {
-
-            GMailer.GmailUsername = "" ;
-            GMailer.GmailPassword = " ";
-=======
         [HttpGet]
         public ActionResult ForgotPassword(String s)
         {
             return View(s);
         }
->>>>>>> refs/remotes/origin/forgotpassword
 
         [HttpPost]
         public ActionResult ForgotPassword(User s)
