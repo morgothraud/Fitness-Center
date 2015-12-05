@@ -21,6 +21,7 @@ namespace FitnessCenterv2.Controllers
         {
 
             return View();
+
         }
 
         [HttpPost]
@@ -29,6 +30,16 @@ namespace FitnessCenterv2.Controllers
             if (ModelState.IsValid)
             {
                 db.Staffs.Add(t);
+                db.SaveChanges();
+
+                User u = new User();
+                u.EMail = t.EMail;
+                u.FirstName = t.FirstName;
+                u.LastName = t.LastName;
+                u.Password = t.Password;
+                u.Role = "Staff";
+
+                db.Users.Add(u);
                 db.SaveChanges();
                 return RedirectToAction("ManageStaff", "Manager");
             }
