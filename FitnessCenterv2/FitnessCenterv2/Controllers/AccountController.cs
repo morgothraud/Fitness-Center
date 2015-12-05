@@ -86,11 +86,14 @@ namespace FitnessCenterv2.Controllers
                 }
                 else if (user.Role == "Staff")
                 {
-
+                    Session["UserID"] = user.UserID.ToString();
+                    Session["FirstName"] = user.FirstName.ToString();
+                    return RedirectToAction("Index", "Staff");
                 }
             }
             else
                 ModelState.AddModelError("", "Email or pw wrong.");
+
             return View();
         }
 
