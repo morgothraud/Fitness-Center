@@ -51,6 +51,7 @@
     <Property Name="EMail" Type="nvarchar" MaxLength="50" />
     <Property Name="AutID" Type="nvarchar" MaxLength="300" />
     <Property Name="isAvaliable" Type="bit" />
+    <Property Name="oldPass" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Report">
     <Key>

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace FitnessCenterv2.Controllers
 {
@@ -62,6 +63,29 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult Login(User c)
         {
+            var user = db.Users.Where(x => x.EMail == c.EMail && x.Password == c.Password).FirstOrDefault();
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Email or pw wrong.");
+                return View();
+            }
+            else {
+                FormsAuthentication.SetAuthCookie(c.EMail,false);
+                Session["UserID"] = user.UserID.ToString();
+                Session["FirstName"] = user.FirstName.ToString();
+                if (user.Role == "Manager")
+                return RedirectToAction("Index", "Manager");
+                if (user.Role == "Staff")
+                return RedirectToAction("Index","Staff");
+            }
+            return View();
+        }
+
+        #region oldLOgin
+        /*  [HttpPost]
+        public ActionResult Login(User c)
+        {
 
             var user = db.Users.Where(x => x.EMail == c.EMail && x.Password == c.Password).FirstOrDefault();
 
@@ -95,7 +119,9 @@ namespace FitnessCenterv2.Controllers
                 ModelState.AddModelError("", "Email or pw wrong.");
 
             return View();
-        }
+        }*/
+        
+        #endregion
 
 
         public ActionResult LoggedIn()
@@ -116,7 +142,7 @@ namespace FitnessCenterv2.Controllers
 
         public ActionResult LogOut()
         {
-
+            FormsAuthentication.SignOut();
             Session.Clear();
             return RedirectToAction("Index", "Home");
         }
