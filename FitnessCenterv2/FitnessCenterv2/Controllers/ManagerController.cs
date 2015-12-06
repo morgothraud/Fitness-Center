@@ -6,11 +6,13 @@ using System.Web.Mvc;
 
 namespace FitnessCenterv2.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class ManagerController : Controller
     {
-
+        
         FitnessCenterEntities db = new FitnessCenterEntities();
         // GET: Manager
+        [HttpGet]
         public ActionResult Index()
         {
             return View(db.Staffs.ToList());

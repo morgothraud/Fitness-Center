@@ -12,15 +12,13 @@ namespace FitnessCenterv2
     using System;
     using System.Collections.Generic;
     
-    public partial class Report
+    public partial class TrainerSchedule
     {
-        public int SenderID { get; set; }
-        public int ReceiverID { get; set; }
-        public string Subject { get; set; }
-        public string Body { get; set; }
-        public Nullable<System.DateTime> SendDate { get; set; }
+        public int ID { get; set; }
+        public int TrainerID { get; set; }
+        public Nullable<System.DateTime> Time { get; set; }
+        public string Type { get; set; }
     
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public virtual Trainer Trainer { get; set; }
     }
 }

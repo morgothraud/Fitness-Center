@@ -1,23 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="FitnessCenterModelStoreContainer" CdmEntityContainer="FitnessCenterEntities">
-    <EntitySetMapping Name="Customers">
-      <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
-        <MappingFragment StoreEntitySet="Customer">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-          <ScalarProperty Name="LastName" ColumnName="LastName" />
-          <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
-          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
-          <ScalarProperty Name="CreditCardNumber" ColumnName="CreditCardNumber" />
-          <ScalarProperty Name="Address" ColumnName="Address" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="EMail" ColumnName="EMail" />
-          <ScalarProperty Name="Gender" ColumnName="Gender" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Equipments">
       <EntityTypeMapping TypeName="FitnessCenterModel.Equipment">
         <MappingFragment StoreEntitySet="Equipment">
@@ -43,6 +26,29 @@
           <ScalarProperty Name="Gender" ColumnName="Gender" />
           <ScalarProperty Name="Salary" ColumnName="Salary" />
           <ScalarProperty Name="Password" ColumnName="Password" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PassResets">
+      <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
+        <MappingFragment StoreEntitySet="PassReset">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="AutID" ColumnName="AutID" />
+          <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
+          <ScalarProperty Name="oldPass" ColumnName="oldPass" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reports">
+      <EntityTypeMapping TypeName="FitnessCenterModel.Report">
+        <MappingFragment StoreEntitySet="Report">
+          <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+          <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+          <ScalarProperty Name="Subject" ColumnName="Subject" />
+          <ScalarProperty Name="Body" ColumnName="Body" />
+          <ScalarProperty Name="SendDate" ColumnName="SendDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -104,24 +110,36 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Reports">
-      <EntityTypeMapping TypeName="FitnessCenterModel.Report">
-        <MappingFragment StoreEntitySet="Report">
-          <ScalarProperty Name="SendDate" ColumnName="SendDate" />
-          <ScalarProperty Name="Body" ColumnName="Body" />
-          <ScalarProperty Name="Subject" ColumnName="Subject" />
-          <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
-          <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="CreditCardNumber" ColumnName="CreditCardNumber" />
+          <ScalarProperty Name="RegistrationDate" ColumnName="RegistrationDate" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="PassResets">
-      <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
-        <MappingFragment StoreEntitySet="PassReset">
-          <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
-          <ScalarProperty Name="AutID" ColumnName="AutID" />
-          <ScalarProperty Name="EMail" ColumnName="EMail" />
-          <ScalarProperty Name="UserID" ColumnName="UserID" />
+    <AssociationSetMapping Name="TrainerCustomerATable" TypeName="FitnessCenterModel.TrainerCustomerATable" StoreEntitySet="TrainerCustomerATable">
+      <EndProperty Name="Trainer">
+        <ScalarProperty Name="ID" ColumnName="TrainerID" />
+      </EndProperty>
+      <EndProperty Name="Customer">
+        <ScalarProperty Name="ID" ColumnName="CustomerID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="TrainerSchedules">
+      <EntityTypeMapping TypeName="FitnessCenterModel.TrainerSchedule">
+        <MappingFragment StoreEntitySet="TrainerSchedule">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Time" ColumnName="Time" />
+          <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
