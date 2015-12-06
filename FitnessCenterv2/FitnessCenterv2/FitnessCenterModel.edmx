@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="FitnessCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="FitnessCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="ID" />
@@ -56,6 +56,7 @@
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
           <Property Name="AutID" Type="nvarchar" MaxLength="300" />
           <Property Name="isAvaliable" Type="bit" />
+          <Property Name="oldPass" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Report">
           <Key>
@@ -213,7 +214,8 @@
             <End Role="Report" EntitySet="Report" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FitnessCenterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -259,6 +261,32 @@
           <Property Name="Gender" Type="Boolean" />
           <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PassReset">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AutID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="isAvaliable" Type="Boolean" />
+          <Property Name="oldPass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_PassReset_User" FromRole="PassReset" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_PassReset_User1" FromRole="PassReset" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="SenderID" />
+            <PropertyRef Name="ReceiverID" />
+          </Key>
+          <Property Name="SenderID" Type="Int32" Nullable="false" />
+          <Property Name="ReceiverID" Type="Int32" Nullable="false" />
+          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SendDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Report_User" FromRole="Report" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="Self.FK_Report_User1" FromRole="Report" ToRole="User" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -314,10 +342,10 @@
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_User" FromRole="User" ToRole="Report" />
-          <NavigationProperty Name="Reports1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="User" ToRole="Report" />
-          <NavigationProperty Name="PassResets" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
-          <NavigationProperty Name="PassResets1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="PassResets" Relationship="Self.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="PassResets1" Relationship="Self.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_User" FromRole="User" ToRole="Report" />
+          <NavigationProperty Name="Reports1" Relationship="Self.FK_Report_User1" FromRole="User" ToRole="Report" />
         </EntityType>
         <Association Name="FK_Customer_Trainer">
           <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
@@ -331,89 +359,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
-          <EntitySet Name="Managers" EntityType="Self.Manager" />
-          <EntitySet Name="Staffs" EntityType="Self.Staff" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Trainers" EntityType="Self.Trainer" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Customer_Trainer" Association="Self.FK_Customer_Trainer">
-            <End Role="Trainer" EntitySet="Trainers" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <EntitySet Name="Reports" EntityType="FitnessCenterModel.Report" />
-          <AssociationSet Name="FK_Report_User" Association="FitnessCenterModel.FK_Report_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Report_User1" Association="FitnessCenterModel.FK_Report_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-          <EntitySet Name="PassResets" EntityType="FitnessCenterModel.PassReset" />
-          <AssociationSet Name="FK_PassReset_User" Association="FitnessCenterModel.FK_PassReset_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PassReset_User1" Association="FitnessCenterModel.FK_PassReset_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="Report">
-          <Key>
-            <PropertyRef Name="SenderID" />
-            <PropertyRef Name="ReceiverID" />
-          </Key>
-          <Property Name="SenderID" Type="Int32" Nullable="false" />
-          <Property Name="ReceiverID" Type="Int32" Nullable="false" />
-          <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SendDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_Report_User" FromRole="Report" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="Report" ToRole="User" />
-        </EntityType>
-        <Association Name="FK_Report_User">
-          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
-          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Report">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Report_User1">
-          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
-          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Report">
-              <PropertyRef Name="ReceiverID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="PassReset">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int32" annotation:StoreGeneratedPattern="None" />
-          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="PassReset" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="PassReset" ToRole="User" />
-          <Property Name="AutID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="isAvaliable" Type="Boolean" />
-        </EntityType>
         <Association Name="FK_PassReset_User">
-          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
@@ -424,8 +372,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PassReset_User1">
-          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
@@ -435,6 +383,61 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Report_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+          <EntitySet Name="Managers" EntityType="Self.Manager" />
+          <EntitySet Name="PassResets" EntityType="Self.PassReset" />
+          <EntitySet Name="Reports" EntityType="Self.Report" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="Trainers" EntityType="Self.Trainer" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_Customer_Trainer" Association="Self.FK_Customer_Trainer">
+            <End Role="Trainer" EntitySet="Trainers" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PassReset" EntitySet="PassResets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PassReset_User1" Association="Self.FK_PassReset_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PassReset" EntitySet="PassResets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -483,6 +486,29 @@
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="Salary" ColumnName="Salary" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PassResets">
+            <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
+              <MappingFragment StoreEntitySet="PassReset">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="AutID" ColumnName="AutID" />
+                <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
+                <ScalarProperty Name="oldPass" ColumnName="oldPass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -541,28 +567,6 @@
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Report">
-              <MappingFragment StoreEntitySet="Report">
-                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
-                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PassResets">
-            <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
-              <MappingFragment StoreEntitySet="PassReset">
-                <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
-                <ScalarProperty Name="AutID" ColumnName="AutID" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
