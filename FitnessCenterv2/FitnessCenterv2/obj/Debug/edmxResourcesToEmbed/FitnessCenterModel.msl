@@ -110,6 +110,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+<<<<<<< HEAD
     <EntitySetMapping Name="Customers">
       <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
@@ -144,5 +145,7 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+=======
+>>>>>>> master
   </EntityContainerMapping>
 </Mapping>

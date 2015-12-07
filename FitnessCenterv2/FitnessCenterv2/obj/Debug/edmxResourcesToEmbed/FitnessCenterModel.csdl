@@ -136,30 +136,43 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+<<<<<<< HEAD
   <Association Name="FK_Report_User">
     <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="Report" Type="Self.Report" Multiplicity="*" />
+=======
+  <Association Name="FK_PassReset_User">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
+>>>>>>> master
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="UserID" />
       </Principal>
-      <Dependent Role="Report">
-        <PropertyRef Name="SenderID" />
+      <Dependent Role="PassReset">
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
+<<<<<<< HEAD
   <Association Name="FK_Report_User1">
     <End Role="User" Type="Self.User" Multiplicity="1" />
     <End Role="Report" Type="Self.Report" Multiplicity="*" />
+=======
+  <Association Name="FK_PassReset_User1">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
+>>>>>>> master
     <ReferentialConstraint>
       <Principal Role="User">
         <PropertyRef Name="UserID" />
       </Principal>
-      <Dependent Role="Report">
-        <PropertyRef Name="ReceiverID" />
+      <Dependent Role="PassReset">
+        <PropertyRef Name="UserID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
+<<<<<<< HEAD
   <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Equipments" EntityType="Self.Equipment" />
     <EntitySet Name="Managers" EntityType="Self.Manager" />
@@ -229,13 +242,66 @@
   <Association Name="FK_TrainerSchedule_Trainer">
     <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="1" />
     <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
+=======
+  <Association Name="FK_Report_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="SenderID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Report_User1">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+>>>>>>> master
     <ReferentialConstraint>
       <Principal Role="Trainer">
         <PropertyRef Name="ID" />
       </Principal>
+<<<<<<< HEAD
       <Dependent Role="TrainerSchedule">
         <PropertyRef Name="TrainerID" />
+=======
+      <Dependent Role="Report">
+        <PropertyRef Name="ReceiverID" />
+>>>>>>> master
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Equipments" EntityType="Self.Equipment" />
+    <EntitySet Name="Managers" EntityType="Self.Manager" />
+    <EntitySet Name="PassResets" EntityType="Self.PassReset" />
+    <EntitySet Name="Reports" EntityType="Self.Report" />
+    <EntitySet Name="Staffs" EntityType="Self.Staff" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Trainers" EntityType="Self.Trainer" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Customer_Trainer" Association="Self.FK_Customer_Trainer">
+      <End Role="Trainer" EntitySet="Trainers" />
+      <End Role="Customer" EntitySet="Customers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PassReset" EntitySet="PassResets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PassReset_User1" Association="Self.FK_PassReset_User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="PassReset" EntitySet="PassResets" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Report" EntitySet="Reports" />
+    </AssociationSet>
+  </EntityContainer>
 </Schema>

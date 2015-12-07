@@ -71,6 +71,7 @@ namespace FitnessCenterv2.Controllers
                 return View();
             }
             else {
+<<<<<<< HEAD
                 FormsAuthentication.SetAuthCookie(c.EMail, false);
                 Session["UserID"] = user.UserID.ToString();
                 Session["FirstName"] = user.FirstName.ToString();
@@ -84,6 +85,15 @@ namespace FitnessCenterv2.Controllers
                 }
                 
 
+=======
+                FormsAuthentication.SetAuthCookie(c.EMail,false);
+                Session["UserID"] = user.UserID.ToString();
+                Session["FirstName"] = user.FirstName.ToString();
+                if (user.Role == "Manager")
+                return RedirectToAction("Index", "Manager");
+                if (user.Role == "Staff")
+                return RedirectToAction("Index","Staff");
+>>>>>>> master
             }
             return View();
         }
