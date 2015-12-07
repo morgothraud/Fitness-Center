@@ -33,6 +33,7 @@ namespace FitnessCenterv2
         public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Trainer> Trainers { get; set; }
+        public virtual DbSet<TrainerSchedule> TrainerSchedules { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

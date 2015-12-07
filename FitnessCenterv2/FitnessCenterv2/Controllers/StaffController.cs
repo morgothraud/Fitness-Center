@@ -6,15 +6,16 @@ using System.Web.Mvc;
 
 namespace FitnessCenterv2.Controllers
 {
-    [Authorize(Roles="Staff")]
+    [Authorize(Roles = "Staff")]
     public class StaffController : Controller
     {
 
         FitnessCenterEntities db = new FitnessCenterEntities();
         // GET: Staff
+         [HttpGet]
         public ActionResult Index()
         {
-            return View( );
+            return View(db.Customers.ToList());
         }
 
         [HttpGet]
@@ -96,6 +97,84 @@ namespace FitnessCenterv2.Controllers
             }
             return View();
         }
+
+
+        [HttpGet]
+        public ActionResult SetTrainerSchedule() {
+
+          return View(db.TrainerSchedules.ToList());
+
+        }
+
+        [HttpGet]
+        public ActionResult AddTrainerSchedule()
+        {
+            ViewBag.Trainers = new SelectList(db.Trainers, "ID", "FirstName");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddTrainerSchedule(TrainerSchedule t,String selectedID)
+        {
+            
+            if(ModelState.IsValid) {
+                t.TrainerID = Convert.ToInt32(selectedID);
+                db.TrainerSchedules.Add(t);
+                db.SaveChanges();
+                return RedirectToAction("SetTrainerSchedule", "Staff");
+            }
+            return View();
+        }
+
+
+        [HttpGet]
+        public ActionResult EditSchedule(int id)
+        {
+            ViewBag.Trainers = new SelectList(db.Trainers, "ID", "FirstName");
+            TrainerSchedule c = db.TrainerSchedules.Where(x => x.ID == id).FirstOrDefault();
+            return View(c);
+        }
+
+        [HttpPost]
+        public ActionResult EditSchedule(TrainerSchedule t,String selectedID)
+        {
+            if (ModelState.IsValid)
+            {
+                t.TrainerID = Convert.ToInt32(selectedID);
+                TrainerSchedule ts = new TrainerSchedule();
+                ts.ID = t.ID;
+                ts.TrainerID = Convert.ToInt32(selectedID);
+                ts.Type = t.Type;
+                ts.Time = t.Time;
+                var toBeUpdated = db.TrainerSchedules.Where(x=>x.ID==t.ID).FirstOrDefault();
+                db.Entry(toBeUpdated).CurrentValues.SetValues(ts);
+                db.SaveChanges();
+                return RedirectToAction("SetTrainerSchedule", "Staff");
+            }
+            return View(t);
+        }
+
+        [HttpGet]
+        public ActionResult DeleteTrainerSchedule(int id)
+        {
+            TrainerSchedule ts = db.TrainerSchedules.Where(x => x.ID == id).FirstOrDefault();
+            return View(ts);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteTrainerSchedule(TrainerSchedule s)
+        {
+ 
+            if (ModelState.IsValid)
+            {
+                db.TrainerSchedules.Attach(s);
+                db.TrainerSchedules.Remove(s);
+                db.SaveChanges();
+                return RedirectToAction("ManageCustomer", "Staff");
+            }
+            return View();
+        }
+
 
     }
 }

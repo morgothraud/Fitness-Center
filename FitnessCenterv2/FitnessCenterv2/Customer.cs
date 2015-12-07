@@ -14,10 +14,14 @@ namespace FitnessCenterv2
     
     public partial class Customer
     {
+        public Customer()
+        {
+            this.Trainers = new HashSet<Trainer>();
+        }
+    
         public int ID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public Nullable<int> TrainerID { get; set; }
         public Nullable<System.DateTime> RegistrationDate { get; set; }
         public string CreditCardNumber { get; set; }
         public string Address { get; set; }
@@ -25,7 +29,8 @@ namespace FitnessCenterv2
         public string EMail { get; set; }
         public Nullable<bool> Gender { get; set; }
         public string Password { get; set; }
+        public Nullable<System.DateTime> BirthDate { get; set; }
     
-        public virtual Trainer Trainer { get; set; }
+        public virtual ICollection<Trainer> Trainers { get; set; }
     }
 }

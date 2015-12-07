@@ -5,20 +5,22 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d046086c4109481c9171deb743089b23" Name="Diagram1">
-        <EntityTypeShape EntityType="FitnessCenterModel.Customer" Width="1.5" PointX="8" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Equipment" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Manager" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.PassReset" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Report" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Staff" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.sysdiagram" Width="1.5" PointX="7.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Trainer" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="FitnessCenterModel.User" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="true" />
-        <AssociationConnector Association="FitnessCenterModel.FK_Customer_Trainer" ManuallyRouted="false" />
-        <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User" ManuallyRouted="false" />
-        <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User1" ManuallyRouted="false" />
-        <AssociationConnector Association="FitnessCenterModel.FK_Report_User" ManuallyRouted="false" />
-        <AssociationConnector Association="FitnessCenterModel.FK_Report_User1" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Customer" Width="1.5" PointX="5.75" PointY="1.25" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Equipment" Width="1.5" PointX="5.75" PointY="5.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Manager" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.PassReset" Width="1.5" PointX="3" PointY="4.25" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Report" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Staff" Width="1.5" PointX="2.75" PointY="7.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.sysdiagram" Width="1.5" PointX="7.75" PointY="5.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Trainer" Width="1.5" PointX="8" PointY="1" />
+        <EntityTypeShape EntityType="FitnessCenterModel.TrainerSchedule" Width="1.5" PointX="10.25" PointY="1.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.User" Width="1.5" PointX="0.75" PointY="2.5" />
+        <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User" />
+        <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User1" />
+        <AssociationConnector Association="FitnessCenterModel.FK_Report_User" />
+        <AssociationConnector Association="FitnessCenterModel.FK_Report_User1" />
+        <AssociationConnector Association="FitnessCenterModel.FK_TrainerSchedule_Trainer" />
+        <AssociationConnector Association="FitnessCenterModel.TrainerCustomerATable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
