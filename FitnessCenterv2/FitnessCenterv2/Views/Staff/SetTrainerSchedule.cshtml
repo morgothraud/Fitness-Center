@@ -1,0 +1,44 @@
+﻿@model IEnumerable<FitnessCenterv2.TrainerSchedule>
+
+@{
+    ViewBag.Title = "SetTrainerSchedule";
+}
+
+<h2>SetTrainerSchedule</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Trainer.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Trainer.FirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditSchedule", new { ID = item.ID, TrainerID = item.TrainerID }) |
+            @Html.ActionLink("Delete", "DeleteTrainerSchedule", new { id = item.ID })
+        </td>
+    </tr>
+}
+
+</table>

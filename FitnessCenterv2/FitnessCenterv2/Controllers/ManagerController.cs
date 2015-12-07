@@ -6,7 +6,15 @@ using System.Web.Mvc;
 
 namespace FitnessCenterv2.Controllers
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
+    [Authorize(Roles = "Manager")]
+=======
     [Authorize(Roles="Manager")]
+>>>>>>> master
+=======
+    [Authorize(Roles="Manager")]
+>>>>>>> master
     public class ManagerController : Controller
     {
         

@@ -170,6 +170,9 @@
     <Compile Include="Trainer.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TrainerSchedule.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
@@ -250,6 +253,10 @@
     <Content Include="Views\Staff\ManageCustomer.cshtml" />
     <Content Include="Views\Staff\EditCustomer.cshtml" />
     <Content Include="Views\Staff\DeleteCustomer.cshtml" />
+    <Content Include="Views\Staff\SetTrainerSchedule.cshtml" />
+    <Content Include="Views\Staff\AddTrainerSchedule.cshtml" />
+    <Content Include="Views\Staff\EditSchedule.cshtml" />
+    <Content Include="Views\Staff\DeleteTrainerSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

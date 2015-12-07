@@ -17,6 +17,7 @@ namespace FitnessCenterv2
         public Trainer()
         {
             this.Customers = new HashSet<Customer>();
+            this.TrainerSchedules = new HashSet<TrainerSchedule>();
         }
     
         public int ID { get; set; }
@@ -32,5 +33,6 @@ namespace FitnessCenterv2
         public string Password { get; set; }
     
         public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<TrainerSchedule> TrainerSchedules { get; set; }
     }
 }
