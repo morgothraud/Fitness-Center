@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +78,8 @@ namespace FitnessCenterv2
         }
     }
 =======
+=======
+>>>>>>> master
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,5 +157,8 @@ namespace FitnessCenterv2
             throw new NotImplementedException();
         }
     }
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
 }

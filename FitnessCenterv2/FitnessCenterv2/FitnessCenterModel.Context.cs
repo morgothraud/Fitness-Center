@@ -26,6 +26,10 @@ namespace FitnessCenterv2
         }
     
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        public virtual DbSet<Customer> Customers { get; set; }
+>>>>>>> master
 =======
         public virtual DbSet<Customer> Customers { get; set; }
 >>>>>>> master
@@ -38,8 +42,11 @@ namespace FitnessCenterv2
         public virtual DbSet<Trainer> Trainers { get; set; }
         public virtual DbSet<User> Users { get; set; }
 <<<<<<< HEAD
+<<<<<<< HEAD
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<TrainerSchedule> TrainerSchedules { get; set; }
+=======
+>>>>>>> master
 =======
 >>>>>>> master
     }

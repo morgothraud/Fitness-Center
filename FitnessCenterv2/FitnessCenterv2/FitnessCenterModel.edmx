@@ -406,9 +406,15 @@
           </ReferentialConstraint>
         </Association>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Association Name="FK_Report_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Report" Type="Self.Report" Multiplicity="*" />
+=======
+        <Association Name="FK_PassReset_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
+>>>>>>> master
 =======
         <Association Name="FK_PassReset_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -424,9 +430,15 @@
           </ReferentialConstraint>
         </Association>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Association Name="FK_Report_User1">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Report" Type="Self.Report" Multiplicity="*" />
+=======
+        <Association Name="FK_PassReset_User1">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
+>>>>>>> master
 =======
         <Association Name="FK_PassReset_User1">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -440,6 +452,7 @@
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
+<<<<<<< HEAD
         </Association>
 <<<<<<< HEAD
         <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
@@ -512,6 +525,9 @@
           <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="1" />
           <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
 =======
+=======
+        </Association>
+>>>>>>> master
         <Association Name="FK_Report_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Report" Type="Self.Report" Multiplicity="*" />
@@ -527,14 +543,22 @@
         <Association Name="FK_Report_User1">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Report" Type="Self.Report" Multiplicity="*" />
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
           <ReferentialConstraint>
             <Principal Role="Trainer">
               <PropertyRef Name="ID" />
             </Principal>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Dependent Role="TrainerSchedule">
               <PropertyRef Name="TrainerID" />
+=======
+            <Dependent Role="Report">
+              <PropertyRef Name="ReceiverID" />
+>>>>>>> master
 =======
             <Dependent Role="Report">
               <PropertyRef Name="ReceiverID" />
@@ -689,6 +713,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
@@ -723,6 +748,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+=======
+>>>>>>> master
 =======
 >>>>>>> master
         </EntityContainerMapping>
