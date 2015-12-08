@@ -4,8 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
+ 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -29,12 +31,28 @@
 
                     @if (Session["UserID"] == null)
                     {
+
+
                         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 
                     }
-                    @if(Session["UserID"] !=null) {
-                    <li>@Html.ActionLink("Log out", "LogOut", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                    @if (Session["UserID"] != null)
+                    {
+
+                        if (Session["Role"].Equals("Manager"))                        {
+                            <li>@Html.ActionLink("Control Panel", "Index", "Manager", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+                        if (Session["Role"].Equals("Customer"))
+                        {
+                            <li>@Html.ActionLink("Control Panel", "Index", "Manager", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+                        if (Session["Role"].Equals("Staff"))
+                        {
+                            <li>@Html.ActionLink("Control Panel", "Index", "Staff", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+
+                             <li>@Html.ActionLink("Log out", "LogOut", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                     }
 
                 </ul>
@@ -49,7 +67,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
+
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
