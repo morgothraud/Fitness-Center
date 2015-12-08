@@ -5,6 +5,13 @@
 }
 
 
+     @Scripts.Render("~/bundles/jquery")
+ 
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
+
 <h2>AddTrainerSchedule</h2>
 
 @using (Html.BeginForm()) 
@@ -21,7 +28,6 @@
                 @Html.ValidationMessageFor(model => model.TrainerID, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -46,6 +52,17 @@
     </div>
 }
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#Time').datetimepicker({
+            dateFormat: "dd-mm-yy",
+            timeFormat: "hh:mm"
+        });
+    });
+
+</script>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

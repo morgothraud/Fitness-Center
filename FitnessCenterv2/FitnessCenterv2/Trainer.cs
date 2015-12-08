@@ -16,8 +16,8 @@ namespace FitnessCenterv2
     {
         public Trainer()
         {
-            this.Customers = new HashSet<Customer>();
             this.TrainerSchedules = new HashSet<TrainerSchedule>();
+            this.WorkoutPrograms = new HashSet<WorkoutProgram>();
         }
     
         public int ID { get; set; }
@@ -32,7 +32,7 @@ namespace FitnessCenterv2
         public Nullable<decimal> Salary { get; set; }
         public string Password { get; set; }
     
-        public virtual ICollection<Customer> Customers { get; set; }
         public virtual ICollection<TrainerSchedule> TrainerSchedules { get; set; }
+        public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
     }
 }

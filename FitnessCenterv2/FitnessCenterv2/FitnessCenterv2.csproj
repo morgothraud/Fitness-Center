@@ -153,6 +153,7 @@
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ChangePasswordModel.cs" />
+    <Compile Include="Models\DateFormatValidation.cs" />
     <Compile Include="Models\GMailer.cs" />
     <Compile Include="PassReset.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
@@ -176,15 +177,29 @@
     <Compile Include="User.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="WorkoutProgram.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\jquery-ui-timepicker-addon.css" />
+    <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="FitnessCenterModel.edmx.sql" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
+    <Content Include="Content\images\ui-bg_dots-small_65_a6a6a6_2x2.png" />
+    <Content Include="Content\images\ui-bg_glass_55_fbf8ee_1x400.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-hard_100_f6f6f6_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_15_cc0000_1x100.png" />
+    <Content Include="Content\images\ui-icons_004276_256x240.png" />
+    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="FitnessCenterModel.edmx">
@@ -208,6 +223,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
+    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -232,11 +249,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\LoggedIn.cshtml" />
     <Content Include="Views\Account\LoggedInManager.cshtml" />
-    <Content Include="Views\Manager\AddStaff.cshtml" />
     <Content Include="Views\Manager\Index.cshtml" />
     <Content Include="Views\Manager\ManageStaff.cshtml" />
     <Content Include="Views\Manager\EditStaff.cshtml" />
@@ -252,11 +267,13 @@
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\ManageCustomer.cshtml" />
     <Content Include="Views\Staff\EditCustomer.cshtml" />
-    <Content Include="Views\Staff\DeleteCustomer.cshtml" />
     <Content Include="Views\Staff\SetTrainerSchedule.cshtml" />
     <Content Include="Views\Staff\AddTrainerSchedule.cshtml" />
     <Content Include="Views\Staff\EditSchedule.cshtml" />
     <Content Include="Views\Staff\DeleteTrainerSchedule.cshtml" />
+    <Content Include="Views\Manager\AddStaff.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Staff\DeleteCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

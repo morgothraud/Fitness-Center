@@ -16,7 +16,7 @@ namespace FitnessCenterv2
     {
         public Customer()
         {
-            this.Trainers = new HashSet<Trainer>();
+            this.WorkoutPrograms = new HashSet<WorkoutProgram>();
         }
     
         public int ID { get; set; }
@@ -29,7 +29,8 @@ namespace FitnessCenterv2
         public string EMail { get; set; }
         public Nullable<bool> Gender { get; set; }
         public string Password { get; set; }
+        public Nullable<System.DateTime> BirthDate { get; set; }
     
-        public virtual ICollection<Trainer> Trainers { get; set; }
+        public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
     }
 }
