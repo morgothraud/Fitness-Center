@@ -72,7 +72,7 @@ namespace FitnessCenterv2.Controllers
             return View(w);
         }
 
-
+//eksik olan viewler hatalardan ötürü eklenemedi.
     
     
 
