@@ -28,14 +28,18 @@ namespace FitnessCenterv2.Controllers
         public ActionResult Register()
         {
 
-            return View();
+            return View(new Customer
+            {
+                Gender = true
+            });
         }
 
         [HttpPost]
-        public ActionResult Register(User c)
+        public ActionResult Register(User c,Customer cu)
         {
             if (ModelState.IsValid)
             {
+                
                 c.Role = "Customer";
                 db.Users.Add(c);
 
@@ -45,6 +49,7 @@ namespace FitnessCenterv2.Controllers
                 cust.Password = c.Password;
                 cust.FirstName = c.FirstName;
                 cust.LastName = c.LastName;
+                cust.Gender = cu.Gender;
                 db.Customers.Add(cust);
                 db.SaveChanges();
 
@@ -71,6 +76,7 @@ namespace FitnessCenterv2.Controllers
                 return View();
             }
             else {
+<<<<<<< HEAD
                 FormsAuthentication.SetAuthCookie(c.EMail,false);
                 Session["UserID"] = user.UserID.ToString();
                 Session["FirstName"] = user.FirstName.ToString();
@@ -80,6 +86,21 @@ namespace FitnessCenterv2.Controllers
                 return RedirectToAction("Index","Staff");
                 if(user.Role == "Trainer")
                 return RedirectToAction("Index", "Trainer");
+=======
+                FormsAuthentication.SetAuthCookie(c.EMail, false);
+                Session["UserID"] = user.UserID.ToString();
+                Session["Role"] = user.Role.ToString();
+                if (user.Role == "Manager")
+                {
+                    return RedirectToAction("Index", "Manager");
+                }
+                if (user.Role == "Staff")
+                {
+                    return RedirectToAction("Index", "Staff");
+                }
+                
+
+>>>>>>> master
             }
             return View();
         }
