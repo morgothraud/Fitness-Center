@@ -1,20 +1,17 @@
-﻿@model FitnessCenterv2.Staff
+﻿@model FitnessCenterv2.Trainer
 
 @{
-    ViewBag.Title = "Add Staff";
+    ViewBag.Title = "AddTrainer";
 }
-<script src="~/Scripts/jquery-ui.min.js"></script>
-<link href="~/Content/jquery-ui.css" rel="stylesheet" />
-<link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-<script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
-<h2>Add New Staff</h2>
+
+<h2>AddTrainer</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Staff</h4>
+        <h4>Trainer</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -30,23 +27,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -75,18 +55,30 @@
         </div>
 
         <div class="form-group">
+            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
             @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.RadioButtonFor(model => model.Gender, "true", new { id = "male" })
-                    @Html.Label("male", "Male")
-                    @Html.RadioButtonFor(model => model.Gender, "false", new { id = "female" })
-                    @Html.Label("female", "Female")
+                    @Html.EditorFor(model => model.Gender)
                     @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
- 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.Salary, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -112,16 +104,6 @@
     </div>
 }
 
-<script type="text/javascript">
-
-    $(document).ready(function () {
-
-        $('#BirthDate').datepicker({
-            dateFormat: "dd/mm/yy",
-        });
-    });
-
-</script>
 <div>
-    @Html.ActionLink("Back to List", "ManageStaff","Manager")
+    @Html.ActionLink("Back to List", "Index")
 </div>

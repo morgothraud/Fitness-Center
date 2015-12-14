@@ -1,4 +1,4 @@
-﻿@model FitnessCenterv2.User
+﻿@model FitnessCenterv2.Customer
 
 @{
     ViewBag.Title = "Login";
@@ -6,18 +6,17 @@
 
 <h2>Login</h2>
 
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-<<<<<<< HEAD
         <h4>Customer</h4>
-=======
-        <h4>User</h4>
->>>>>>> master
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+      
+
         <div class="form-group">
             @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -26,6 +25,8 @@
             </div>
         </div>
 
+        
+
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -33,7 +34,6 @@
                 @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
             </div>
         </div>
- 
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -46,4 +46,9 @@
 <div>
     @Html.ActionLink("Back to List", "Index", "Home") |
     @Html.ActionLink("Forgot Password?", "ForgotPassword")
+
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

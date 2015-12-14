@@ -26,7 +26,6 @@
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ID" ColumnName="ID" />
-<<<<<<< HEAD
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -37,8 +36,6 @@
           <ScalarProperty Name="GuestName" ColumnName="GuestName" />
           <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
           <ScalarProperty Name="GuestID" ColumnName="GuestID" />
-=======
->>>>>>> master
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -128,7 +125,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-<<<<<<< HEAD
     <EntitySetMapping Name="TrainerCustomerATables">
       <EntityTypeMapping TypeName="FitnessCenterModel.TrainerCustomerATable">
         <MappingFragment StoreEntitySet="TrainerCustomerATable">
@@ -138,8 +134,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-=======
->>>>>>> master
     <EntitySetMapping Name="TrainerSchedules">
       <EntityTypeMapping TypeName="FitnessCenterModel.TrainerSchedule">
         <MappingFragment StoreEntitySet="TrainerSchedule">
@@ -150,7 +144,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-<<<<<<< HEAD
     <EntitySetMapping Name="TypeTables">
       <EntityTypeMapping TypeName="FitnessCenterModel.TypeTable">
         <MappingFragment StoreEntitySet="TypeTable">
@@ -159,8 +152,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-=======
->>>>>>> master
     <EntitySetMapping Name="Users">
       <EntityTypeMapping TypeName="FitnessCenterModel.User">
         <MappingFragment StoreEntitySet="User">
@@ -177,10 +168,6 @@
       <EntityTypeMapping TypeName="FitnessCenterModel.WorkoutProgram">
         <MappingFragment StoreEntitySet="WorkoutProgram">
           <ScalarProperty Name="Schedule" ColumnName="Schedule" />
-<<<<<<< HEAD
-=======
-          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
->>>>>>> master
           <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>

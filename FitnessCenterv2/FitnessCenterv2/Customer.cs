@@ -17,11 +17,7 @@ namespace FitnessCenterv2
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-<<<<<<< HEAD
             this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
-=======
-            this.WorkoutPrograms = new HashSet<WorkoutProgram>();
->>>>>>> master
         }
     
         public int ID { get; set; }
@@ -36,11 +32,7 @@ namespace FitnessCenterv2
         public string Password { get; set; }
         public Nullable<System.DateTime> BirthDate { get; set; }
     
-<<<<<<< HEAD
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
-=======
-        public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
->>>>>>> master
     }
 }

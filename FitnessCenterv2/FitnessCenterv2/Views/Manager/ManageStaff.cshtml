@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<FitnessCenterv2.Staff>
 
 @{
-    ViewBag.Title = "Manage Staff";
+    ViewBag.Title = "ManageStaff";
 }
 
-<h2>Staff List</h2>
+<h2>ManageStaff</h2>
 
 <p>
     @Html.ActionLink("Add New Staff", "AddStaff")
@@ -73,17 +73,7 @@
             @Html.DisplayFor(modelItem => item.EMail)
         </td>
         <td>
-
-            @if (item.Gender==true)
-            {
-                <p>Male</p>
-            }
-    
-            @if (item.Gender==false)
-           {
-            <p>Female</p>
-           }
-
+            @Html.DisplayFor(modelItem => item.Gender)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.HireDate)
@@ -103,6 +93,6 @@
         </td>
     </tr>
     }
-
+}
 
 </table>
