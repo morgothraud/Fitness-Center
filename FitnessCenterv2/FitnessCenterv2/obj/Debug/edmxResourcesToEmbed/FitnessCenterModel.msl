@@ -29,6 +29,16 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="GuestLists">
+      <EntityTypeMapping TypeName="FitnessCenterModel.GuestList">
+        <MappingFragment StoreEntitySet="GuestList">
+          <ScalarProperty Name="GuestPhone" ColumnName="GuestPhone" />
+          <ScalarProperty Name="GuestName" ColumnName="GuestName" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="GuestID" ColumnName="GuestID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Managers">
       <EntityTypeMapping TypeName="FitnessCenterModel.Manager">
         <MappingFragment StoreEntitySet="Manager">
@@ -115,12 +125,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="TrainerCustomerATables">
+      <EntityTypeMapping TypeName="FitnessCenterModel.TrainerCustomerATable">
+        <MappingFragment StoreEntitySet="TrainerCustomerATable">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+          <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TrainerSchedules">
       <EntityTypeMapping TypeName="FitnessCenterModel.TrainerSchedule">
         <MappingFragment StoreEntitySet="TrainerSchedule">
           <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="Time" ColumnName="Time" />
           <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TypeTables">
+      <EntityTypeMapping TypeName="FitnessCenterModel.TypeTable">
+        <MappingFragment StoreEntitySet="TypeTable">
+          <ScalarProperty Name="Type" ColumnName="Type" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -141,7 +168,6 @@
       <EntityTypeMapping TypeName="FitnessCenterModel.WorkoutProgram">
         <MappingFragment StoreEntitySet="WorkoutProgram">
           <ScalarProperty Name="Schedule" ColumnName="Schedule" />
-          <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
           <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>

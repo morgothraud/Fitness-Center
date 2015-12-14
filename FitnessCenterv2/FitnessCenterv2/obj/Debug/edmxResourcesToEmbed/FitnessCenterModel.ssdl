@@ -16,6 +16,11 @@
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
     <Property Name="BirthDate" Type="date" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="dsdsa">
+          <Property Name="dsad" Type="nchar" MaxLength="10" />
+        </EntityType>-->
   <EntityType Name="Equipment">
     <Key>
       <PropertyRef Name="ID" />
@@ -25,6 +30,15 @@
     <Property Name="Quantity" Type="int" />
     <Property Name="IsAvaliable" Type="bit" />
     <Property Name="UnitPrice" Type="int" />
+  </EntityType>
+  <EntityType Name="GuestList">
+    <Key>
+      <PropertyRef Name="GuestID" />
+    </Key>
+    <Property Name="GuestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerID" Type="int" />
+    <Property Name="GuestName" Type="varchar" MaxLength="50" />
+    <Property Name="GuestPhone" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Manager">
     <Key>
@@ -107,6 +121,14 @@
     <Property Name="Salary" Type="decimal" Precision="18" Scale="0" />
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="TrainerCustomerATable">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="TrainerID" Type="int" />
+    <Property Name="CustomerID" Type="int" />
+    <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
   <EntityType Name="TrainerSchedule">
     <Key>
       <PropertyRef Name="ID" />
@@ -114,6 +136,13 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TrainerID" Type="int" Nullable="false" />
     <Property Name="Time" Type="smalldatetime" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="TypeTable">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="Type" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="User">
@@ -130,13 +159,10 @@
   <EntityType Name="WorkoutProgram">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="TrainerID" />
-      <PropertyRef Name="CustomerID" />
     </Key>
     <Property Name="ID" Type="int" Nullable="false" />
     <Property Name="TrainerID" Type="int" Nullable="false" />
-    <Property Name="CustomerID" Type="int" Nullable="false" />
-    <Property Name="Schedule" Type="nvarchar" MaxLength="50" />
+    <Property Name="Schedule" Type="nvarchar" MaxLength="255" />
   </EntityType>
   <Association Name="FK_PassReset_User">
     <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -159,6 +185,18 @@
       </Principal>
       <Dependent Role="PassReset">
         <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Report_Staff">
+    <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+    <End Role="Report" Type="Self.Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Staff">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Report">
+        <PropertyRef Name="SenderID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -186,6 +224,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TrainerCustomerATable_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="TrainerCustomerATable" Type="Self.TrainerCustomerATable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainerCustomerATable">
+        <PropertyRef Name="CustomerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TrainerCustomerATable_Trainer">
+    <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
+    <End Role="TrainerCustomerATable" Type="Self.TrainerCustomerATable" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trainer">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainerCustomerATable">
+        <PropertyRef Name="TrainerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TrainerSchedule_Trainer">
     <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
     <End Role="TrainerSchedule" Type="Self.TrainerSchedule" Multiplicity="*" />
@@ -195,18 +257,6 @@
       </Principal>
       <Dependent Role="TrainerSchedule">
         <PropertyRef Name="TrainerID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_WorkoutProgram_Customer">
-    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
-    <End Role="WorkoutProgram" Type="Self.WorkoutProgram" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Customer">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="WorkoutProgram">
-        <PropertyRef Name="CustomerID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -225,13 +275,16 @@
   <EntityContainer Name="FitnessCenterModelStoreContainer">
     <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GuestList" EntityType="Self.GuestList" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PassReset" EntityType="Self.PassReset" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Trainer" EntityType="Self.Trainer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TrainerCustomerATable" EntityType="Self.TrainerCustomerATable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TrainerSchedule" EntityType="Self.TrainerSchedule" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TypeTable" EntityType="Self.TypeTable" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="WorkoutProgram" EntityType="Self.WorkoutProgram" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
@@ -242,6 +295,10 @@
       <End Role="User" EntitySet="User" />
       <End Role="PassReset" EntitySet="PassReset" />
     </AssociationSet>
+    <AssociationSet Name="FK_Report_Staff" Association="Self.FK_Report_Staff">
+      <End Role="Staff" EntitySet="Staff" />
+      <End Role="Report" EntitySet="Report" />
+    </AssociationSet>
     <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
       <End Role="User" EntitySet="User" />
       <End Role="Report" EntitySet="Report" />
@@ -250,13 +307,17 @@
       <End Role="User" EntitySet="User" />
       <End Role="Report" EntitySet="Report" />
     </AssociationSet>
+    <AssociationSet Name="FK_TrainerCustomerATable_Customer" Association="Self.FK_TrainerCustomerATable_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATable" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TrainerCustomerATable_Trainer" Association="Self.FK_TrainerCustomerATable_Trainer">
+      <End Role="Trainer" EntitySet="Trainer" />
+      <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATable" />
+    </AssociationSet>
     <AssociationSet Name="FK_TrainerSchedule_Trainer" Association="Self.FK_TrainerSchedule_Trainer">
       <End Role="Trainer" EntitySet="Trainer" />
       <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
-    </AssociationSet>
-    <AssociationSet Name="FK_WorkoutProgram_Customer" Association="Self.FK_WorkoutProgram_Customer">
-      <End Role="Customer" EntitySet="Customer" />
-      <End Role="WorkoutProgram" EntitySet="WorkoutProgram" />
     </AssociationSet>
     <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="Self.FK_WorkoutProgram_Trainer">
       <End Role="Trainer" EntitySet="Trainer" />

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,16 +40,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -124,10 +126,10 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="Controllers\TrainerController.cs" />
     <Compile Include="Customer.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\CustomRoleProvider.cs" />
     <Compile Include="Equipment.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
@@ -146,14 +148,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
+    <Compile Include="GuestList.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Manager.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomRoleProvider.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
     <Compile Include="Models\ChangePasswordModel.cs" />
-    <Compile Include="Models\DateFormatValidation.cs" />
     <Compile Include="Models\GMailer.cs" />
     <Compile Include="PassReset.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
@@ -171,7 +176,13 @@
     <Compile Include="Trainer.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TrainerCustomerATable.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="TrainerSchedule.cs">
+      <DependentUpon>FitnessCenterModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TypeTable.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
@@ -184,47 +195,33 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\jquery-ui-timepicker-addon.css" />
-    <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
-    <Content Include="FitnessCenterModel.edmx.sql" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
-    <Content Include="Content\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
-    <Content Include="Content\images\ui-bg_dots-small_65_a6a6a6_2x2.png" />
-    <Content Include="Content\images\ui-bg_glass_55_fbf8ee_1x400.png" />
-    <Content Include="Content\images\ui-bg_highlight-hard_100_eeeeee_1x100.png" />
-    <Content Include="Content\images\ui-bg_highlight-hard_100_f6f6f6_1x100.png" />
-    <Content Include="Content\images\ui-bg_highlight-soft_15_cc0000_1x100.png" />
-    <Content Include="Content\images\ui-icons_004276_256x240.png" />
-    <Content Include="Content\images\ui-icons_cc0000_256x240.png" />
-    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="FitnessCenterModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>FitnessCenterModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <Content Include="FitnessCenterModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
       <LastGenOutput>FitnessCenterModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="FitnessCenterModel.edmx.diagram">
-      <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
     </Content>
     <Content Include="FitnessCenterModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
       <LastGenOutput>FitnessCenterModel.cs</LastGenOutput>
     </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <EntityDeploy Include="FitnessCenterModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FitnessCenterModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="FitnessCenterModel.edmx.diagram">
+      <DependentUpon>FitnessCenterModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
-    <Content Include="Scripts\jquery-ui.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -233,7 +230,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -249,9 +248,13 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\LoggedIn.cshtml" />
     <Content Include="Views\Account\LoggedInManager.cshtml" />
+    <Content Include="Views\Manager\AddStaff.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Views\Manager\Index.cshtml" />
     <Content Include="Views\Manager\ManageStaff.cshtml" />
     <Content Include="Views\Manager\EditStaff.cshtml" />
@@ -267,13 +270,12 @@
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\ManageCustomer.cshtml" />
     <Content Include="Views\Staff\EditCustomer.cshtml" />
-    <Content Include="Views\Staff\SetTrainerSchedule.cshtml" />
-    <Content Include="Views\Staff\AddTrainerSchedule.cshtml" />
-    <Content Include="Views\Staff\EditSchedule.cshtml" />
-    <Content Include="Views\Staff\DeleteTrainerSchedule.cshtml" />
-    <Content Include="Views\Manager\AddStaff.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Staff\DeleteCustomer.cshtml" />
+    <Content Include="Views\Trainer\Index.cshtml" />
+    <Content Include="Views\Trainer\AddWorkoutSchedule.cshtml" />
+    <Content Include="Views\Trainer\getCustomer.cshtml" />
+    <Content Include="Views\Trainer\EditSchedule.cshtml" />
+    <Content Include="Views\Trainer\GenerateReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

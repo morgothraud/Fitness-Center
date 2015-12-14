@@ -28,18 +28,14 @@ namespace FitnessCenterv2.Controllers
         public ActionResult Register()
         {
 
-            return View(new Customer
-            {
-                Gender = true
-            });
+            return View();
         }
 
         [HttpPost]
-        public ActionResult Register(User c,Customer cu)
+        public ActionResult Register(User c)
         {
             if (ModelState.IsValid)
             {
-                
                 c.Role = "Customer";
                 db.Users.Add(c);
 
@@ -49,7 +45,6 @@ namespace FitnessCenterv2.Controllers
                 cust.Password = c.Password;
                 cust.FirstName = c.FirstName;
                 cust.LastName = c.LastName;
-                cust.Gender = cu.Gender;
                 db.Customers.Add(cust);
                 db.SaveChanges();
 
@@ -76,19 +71,15 @@ namespace FitnessCenterv2.Controllers
                 return View();
             }
             else {
-                FormsAuthentication.SetAuthCookie(c.EMail, false);
+                FormsAuthentication.SetAuthCookie(c.EMail,false);
                 Session["UserID"] = user.UserID.ToString();
-                Session["Role"] = user.Role.ToString();
+                Session["FirstName"] = user.FirstName.ToString();
                 if (user.Role == "Manager")
-                {
-                    return RedirectToAction("Index", "Manager");
-                }
+                return RedirectToAction("Index", "Manager");
                 if (user.Role == "Staff")
-                {
-                    return RedirectToAction("Index", "Staff");
-                }
-                
-
+                return RedirectToAction("Index","Staff");
+                if(user.Role == "Trainer")
+                return RedirectToAction("Index", "Trainer");
             }
             return View();
         }
@@ -205,6 +196,7 @@ namespace FitnessCenterv2.Controllers
 
         public ActionResult VerifyCode(String authID)
         {
+
             var val = db.PassResets.Where(x => x.AutID == authID);
             var isAvaliable = db.PassResets.Where(x => x.AutID == authID).FirstOrDefault().isAvaliable;
             if (val != null && isAvaliable == true)

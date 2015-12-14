@@ -1,12 +1,9 @@
 ﻿@model FitnessCenterv2.Customer
 
 @{
-    ViewBag.Title = "Edit Customer Details";
+    ViewBag.Title = "EditCustomer";
 }
-<script src="~/Scripts/jquery-ui.min.js"></script>
-<link href="~/Content/jquery-ui.css" rel="stylesheet" />
-<link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
-<script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
+
 <h2>EditCustomer</h2>
 
 @using (Html.BeginForm())
@@ -38,10 +35,10 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RegistrationDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -81,11 +78,7 @@
             @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.RadioButtonFor(model => model.Gender, "true", new { id = "male" })
-                    @Html.Label("male", "Male")
-
-                    @Html.RadioButtonFor(model => model.Gender, "false", new { id = "female" })
-                    @Html.Label("female", "Female")
+                    @Html.EditorFor(model => model.Gender)
                     @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -106,17 +99,7 @@
         </div>
     </div>
 }
-<script type="text/javascript">
 
-    $(document).ready(function () {
-
-        $('#BirthDate').datepicker({
-            dateFormat: "dd/mm/yy",
-
-        });
-    });
-
-</script>
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>

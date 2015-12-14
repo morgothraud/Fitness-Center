@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace FitnessCenterv2.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles="Manager")]
     public class ManagerController : Controller
     {
         
@@ -31,7 +31,6 @@ namespace FitnessCenterv2.Controllers
         {
             if (ModelState.IsValid)
             {
-                t.HireDate = DateTime.Now;
                 db.Staffs.Add(t);
                 db.SaveChanges();
 

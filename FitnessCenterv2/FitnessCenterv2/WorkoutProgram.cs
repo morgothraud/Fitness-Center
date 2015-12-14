@@ -16,10 +16,8 @@ namespace FitnessCenterv2
     {
         public int ID { get; set; }
         public int TrainerID { get; set; }
-        public int CustomerID { get; set; }
         public string Schedule { get; set; }
     
-        public virtual Customer Customer { get; set; }
         public virtual Trainer Trainer { get; set; }
     }
 }

@@ -1,17 +1,17 @@
 ﻿@model FitnessCenterv2.Equipment
 
 @{
-    ViewBag.Title = "Add Equipment";
+    ViewBag.Title = "AddEquipment";
 }
 
-<h2>Add Equipment</h2>
+<h2>AddEquipment</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Add a new equipment to the system.</h4>
+        <h4>Equipment</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

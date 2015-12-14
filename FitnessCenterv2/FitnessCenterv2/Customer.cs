@@ -14,9 +14,10 @@ namespace FitnessCenterv2
     
     public partial class Customer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
-            this.WorkoutPrograms = new HashSet<WorkoutProgram>();
+            this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
         }
     
         public int ID { get; set; }
@@ -31,6 +32,7 @@ namespace FitnessCenterv2
         public string Password { get; set; }
         public Nullable<System.DateTime> BirthDate { get; set; }
     
-        public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
     }
 }
