@@ -4,10 +4,14 @@
     ViewBag.Title = "ManageEquipment";
 }
 
-<h2>ManageEquipment</h2>
-
+<h2>Manage Equipment</h2>
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
 <p>
-    @Html.ActionLink("Create New", "AddEquipment")
+<p>
+    @Html.ActionLink("Add New Equipment", "AddEquipment")
 </p>
 <table class="table">
     <tr>

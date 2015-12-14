@@ -4,11 +4,11 @@
     ViewBag.Title = "DeleteStaff";
 }
 
-<h2>DeleteStaff</h2>
+<h2>Delete Staff</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Staff</h4>
+ 
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -72,7 +72,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Gender)
+            @if (Model.Gender == true)
+            {
+                <p>Male</p>
+            }
+
+            @if (Model.Gender == false)
+            {
+                <p>Female</p>
+            }
         </dd>
 
         <dt>
@@ -106,7 +114,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "ManageStaff","Manager")
         </div>
     }
 </div>

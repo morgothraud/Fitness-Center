@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Customers">
       <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="WorkoutID" ColumnName="WorkoutID" />
           <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -71,6 +72,7 @@
     <EntitySetMapping Name="Reports">
       <EntityTypeMapping TypeName="FitnessCenterModel.Report">
         <MappingFragment StoreEntitySet="Report">
+          <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="SendDate" ColumnName="SendDate" />
           <ScalarProperty Name="Body" ColumnName="Body" />
           <ScalarProperty Name="Subject" ColumnName="Subject" />
@@ -167,8 +169,8 @@
     <EntitySetMapping Name="WorkoutPrograms">
       <EntityTypeMapping TypeName="FitnessCenterModel.WorkoutProgram">
         <MappingFragment StoreEntitySet="WorkoutProgram">
-          <ScalarProperty Name="Schedule" ColumnName="Schedule" />
           <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+          <ScalarProperty Name="Schedule" ColumnName="Schedule" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

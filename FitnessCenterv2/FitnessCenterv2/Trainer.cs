@@ -11,10 +11,10 @@ namespace FitnessCenterv2
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class Trainer
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Trainer()
         {
             this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
@@ -23,22 +23,24 @@ namespace FitnessCenterv2
         }
     
         public int ID { get; set; }
+        [Display(Name="First Name")]
         public string FirstName { get; set; }
+        [Display(Name="Last Name")]
         public string LastName { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        [Required]
         public string EMail { get; set; }
+        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> BirthDate { get; set; }
         public Nullable<bool> Gender { get; set; }
         public Nullable<System.DateTime> HireDate { get; set; }
         public Nullable<decimal> Salary { get; set; }
+        [Required]
         public string Password { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainerSchedule> TrainerSchedules { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
     }
 }

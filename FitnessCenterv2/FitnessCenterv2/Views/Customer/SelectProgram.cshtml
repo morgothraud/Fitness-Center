@@ -1,0 +1,52 @@
+﻿@model IEnumerable<FitnessCenterv2.WorkoutProgram>
+
+@{
+    ViewBag.Title = "SelectProgram";
+}
+
+<h2>SelectProgram</h2>
+
+<p>
+    @Html.ActionLink("Create a new Workout Program", "Create")
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+
+<p class="alert alert-info" id="infoMessage">@TempData["Info"]</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedule)
+        </th>
+        <th>
+           
+        </th>
+        <th>
+          
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Schedule)
+        </td>
+        <td>
+            
+        </td>
+        <td>
+          
+        </td>
+        <td>
+            @Html.ActionLink("Details", "ScheduleDetails", new {  id=item.ID  }) 
+            
+        </td>
+    </tr>
+}
+
+</table>

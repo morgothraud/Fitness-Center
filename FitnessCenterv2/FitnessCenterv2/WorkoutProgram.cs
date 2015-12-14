@@ -15,8 +15,8 @@ namespace FitnessCenterv2
     public partial class WorkoutProgram
     {
         public int ID { get; set; }
-        public int TrainerID { get; set; }
         public string Schedule { get; set; }
+        public Nullable<int> TrainerID { get; set; }
     
         public virtual Trainer Trainer { get; set; }
     }

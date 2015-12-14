@@ -1,0 +1,40 @@
+﻿@model IEnumerable<FitnessCenterv2.WorkoutProgram>
+<h2>Workout List</h2>
+<p>
+    @Html.ActionLink("New Workout Schedule", "AddWorkoutSchedule")
+</p>
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedule)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Trainer.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Schedule)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Trainer.FirstName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "EditWorkoutSchedule", new { id=item.ID }) |
+
+            @Html.ActionLink("Delete", "DeleteWorkoutSchedule", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

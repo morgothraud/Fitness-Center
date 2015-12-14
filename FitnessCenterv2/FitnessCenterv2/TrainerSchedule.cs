@@ -17,8 +17,9 @@ namespace FitnessCenterv2
         public int ID { get; set; }
         public int TrainerID { get; set; }
         public Nullable<System.DateTime> Time { get; set; }
-        public string Type { get; set; }
+        public Nullable<int> Type { get; set; }
     
         public virtual Trainer Trainer { get; set; }
+        public virtual TypeTable TypeTable { get; set; }
     }
 }

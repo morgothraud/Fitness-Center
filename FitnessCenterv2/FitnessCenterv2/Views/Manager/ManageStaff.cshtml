@@ -1,11 +1,14 @@
 ﻿@model IEnumerable<FitnessCenterv2.Staff>
 
 @{
-    ViewBag.Title = "ManageStaff";
+    ViewBag.Title = "Manage Staff";
 }
 
-<h2>ManageStaff</h2>
-
+<h2>Staff List</h2>
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
 <p>
     @Html.ActionLink("Add New Staff", "AddStaff")
 </p>
@@ -41,9 +44,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Salary)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Password)
-        </th>
+ 
         <th></th>
     </tr>
 
@@ -73,16 +74,23 @@
             @Html.DisplayFor(modelItem => item.EMail)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Gender)
+
+            @if (item.Gender==true)
+            {
+                <p>Male</p>
+            }
+    
+            @if (item.Gender==false)
+           {
+            <p>Female</p>
+           }
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.HireDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Salary)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Password)
         </td>
         <td>
             @Html.ActionLink("Edit", "EditStaff", new { id=item.ID }) |
@@ -93,6 +101,6 @@
         </td>
     </tr>
     }
-}
+
 
 </table>
