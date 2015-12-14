@@ -11,28 +11,35 @@ namespace FitnessCenterv2
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class Customer
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
             this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
         }
-    
+
         public int ID { get; set; }
+        [Required, Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
+
         public Nullable<System.DateTime> RegistrationDate { get; set; }
+        [Display(Name = "Credit Card Number")]
         public string CreditCardNumber { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
+        [Required]
         public string EMail { get; set; }
         public Nullable<bool> Gender { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> BirthDate { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public Nullable<int> WorkoutID { get; set; }
+
         public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
     }
 }

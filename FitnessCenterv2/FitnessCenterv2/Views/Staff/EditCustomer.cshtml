@@ -1,9 +1,12 @@
 ﻿@model FitnessCenterv2.Customer
 
 @{
-    ViewBag.Title = "EditCustomer";
+    ViewBag.Title = "Edit Customer Details";
 }
-
+<script src="~/Scripts/jquery-ui.min.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
 <h2>EditCustomer</h2>
 
 @using (Html.BeginForm())
@@ -11,7 +14,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Customer</h4>
+ 
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
@@ -35,10 +38,10 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RegistrationDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.RegistrationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.RegistrationDate, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -78,19 +81,17 @@
             @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.Gender)
+                    @Html.RadioButtonFor(model => model.Gender, "true", new { id = "male" })
+                    @Html.Label("male", "Male")
+
+                    @Html.RadioButtonFor(model => model.Gender, "false", new { id = "female" })
+                    @Html.Label("female", "Female")
                     @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
+     
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -99,7 +100,17 @@
         </div>
     </div>
 }
+<script type="text/javascript">
 
+    $(document).ready(function () {
+
+        $('#BirthDate').datepicker({
+            dateFormat: "dd/mm/yy",
+
+        });
+    });
+
+</script>
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "ManageCustomer","Staff")
 </div>

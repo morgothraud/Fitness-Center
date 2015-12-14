@@ -1,17 +1,17 @@
 ﻿@model FitnessCenterv2.Equipment
 
 @{
-    ViewBag.Title = "AddEquipment";
+    ViewBag.Title = "Add Equipment";
 }
 
-<h2>AddEquipment</h2>
+<h2>Add Equipment</h2>
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Equipment</h4>
+        <h4>Add a new equipment to the system.</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -34,9 +34,14 @@
             @Html.LabelFor(model => model.IsAvaliable, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.EditorFor(model => model.IsAvaliable)
+                    @Html.RadioButtonFor(model => model.IsAvaliable, "true", new { id = "true" })
+                    @Html.Label("true", "Is Avaliable")
+
+                    @Html.RadioButtonFor(model => model.IsAvaliable, "false", new { id = "false" })
+                    @Html.Label("false", "Not Avaliable")
                     @Html.ValidationMessageFor(model => model.IsAvaliable, "", new { @class = "text-danger" })
                 </div>
+
             </div>
         </div>
 

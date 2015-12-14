@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\M0NSTER\Desktop\Fitness-Center-authentication\FitnessCenterv2\FitnessCenterv2\FitnessCenterModel.edmx'. 
+﻿// T4 code generation is enabled for model 'D:\Drive\Projects\C#\FitnessCenterv2\FitnessCenterv2\FitnessCenterModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

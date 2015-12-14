@@ -14,7 +14,14 @@ namespace FitnessCenterv2
     
     public partial class TypeTable
     {
+        public TypeTable()
+        {
+            this.TrainerSchedules = new HashSet<TrainerSchedule>();
+        }
+    
         public int ID { get; set; }
         public string Type { get; set; }
+    
+        public virtual ICollection<TrainerSchedule> TrainerSchedules { get; set; }
     }
 }

@@ -18,24 +18,33 @@ namespace FitnessCenterv2.Controllers
         public ActionResult Index()
         {
 
-            String chart1 = "1";
-            var GraphLst = new List<string> { chart1, chart1 };
-            ViewBag.displayGraph = new SelectList(GraphLst);
-
             return View(db.Trainers.ToList());
         }
 
+        /// <summary>
+        /// this method displays a register page.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Register()
         {
 
-            return View();
+            return View(new Customer
+            {
+                Gender = true
+            });
         }
-
+        /// <summary>
+        /// this method registers the current user as customer.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="cu"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Register(User c)
+        public ActionResult Register(User c, Customer cu)
         {
             if (ModelState.IsValid)
             {
+
                 c.Role = "Customer";
                 db.Users.Add(c);
 
@@ -45,21 +54,30 @@ namespace FitnessCenterv2.Controllers
                 cust.Password = c.Password;
                 cust.FirstName = c.FirstName;
                 cust.LastName = c.LastName;
+                cust.Gender = cu.Gender;
+                cust.RegistrationDate = DateTime.Now;
                 db.Customers.Add(cust);
                 db.SaveChanges();
 
                 ModelState.Clear();
-                ViewBag.Message = c.FirstName + "successfully registered.";
+                TempData["Success"] = cust.EMail + " is registered successfully.";
             }
             return View();
         }
-
+        /// <summary>
+        /// this method shows login page with necessary fields.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Login()
         {
 
             return View();
         }
-
+        /// <summary>
+        /// this method check whether a userID and password is wrong and logs in.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(User c)
         {
@@ -67,64 +85,34 @@ namespace FitnessCenterv2.Controllers
 
             if (user == null)
             {
-                ModelState.AddModelError("", "Email or pw wrong.");
+                ModelState.AddModelError("", "Email or password wrong.");
                 return View();
             }
-            else {
-                FormsAuthentication.SetAuthCookie(c.EMail,false);
+            else
+            {
+                FormsAuthentication.SetAuthCookie(c.EMail, false);
                 Session["UserID"] = user.UserID.ToString();
-                Session["FirstName"] = user.FirstName.ToString();
+                Session["Role"] = user.Role.ToString();
                 if (user.Role == "Manager")
-                return RedirectToAction("Index", "Manager");
+                {
+                    return RedirectToAction("Index", "Manager");
+                }
                 if (user.Role == "Staff")
-                return RedirectToAction("Index","Staff");
-                if(user.Role == "Trainer")
-                return RedirectToAction("Index", "Trainer");
+                {
+                    return RedirectToAction("Index", "Staff");
+                }
+                if (user.Role == "Customer")
+                {
+                    return RedirectToAction("Index", "Customer");
+                }
+                if (user.Role == "Trainer")
+                {
+                    return RedirectToAction("Index", "Trainer");
+                }
+
             }
             return View();
         }
-
-        #region oldLOgin
-        /*  [HttpPost]
-        public ActionResult Login(User c)
-        {
-
-            var user = db.Users.Where(x => x.EMail == c.EMail && x.Password == c.Password).FirstOrDefault();
-
-            if (user != null)
-            {
-                if (user.Role == "Customer")
-                {
-                    Session["UserID"] = user.UserID.ToString();
-                    Session["FirstName"] = user.FirstName.ToString();
-                    return RedirectToAction("LoggedIn");
-                }
-                else if (user.Role == "Manager")
-                {
-                    Session["UserID"] = user.UserID.ToString();
-                    Session["FirstName"] = user.FirstName.ToString();
-                    return RedirectToAction("Index", "Manager");
-                }
-                else if (user.Role == "Trainer")
-                {
-
-
-                }
-                else if (user.Role == "Staff")
-                {
-                    Session["UserID"] = user.UserID.ToString();
-                    Session["FirstName"] = user.FirstName.ToString();
-                    return RedirectToAction("Index", "Staff");
-                }
-            }
-            else
-                ModelState.AddModelError("", "Email or pw wrong.");
-
-            return View();
-        }*/
-        
-        #endregion
-
 
         public ActionResult LoggedIn()
         {
@@ -133,15 +121,10 @@ namespace FitnessCenterv2.Controllers
             else return RedirectToAction("Login");
         }
 
-
-        public ActionResult LoggedInManager()
-        {
-
-            if (Session["UserID"] != null)
-                return View(db.Trainers.ToList());
-            else return RedirectToAction("Login");
-        }
-
+        /// <summary>
+        /// this method logs out a user.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOut()
         {
             FormsAuthentication.SignOut();
@@ -149,54 +132,66 @@ namespace FitnessCenterv2.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// this method displays a forgot password page.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult ForgotPassword(String s)
         {
             return View(s);
         }
 
+        /// <summary>
+        /// this method sends a verification code to the email adress given.
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ForgotPassword(User s)
         {
             var u = db.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
             if (u == null)
             {
-                ViewBag.Message = "Such user cannot be found.";
+                ModelState.AddModelError("", "Such user cannot be found.");
                 return View();
             }
             else
             {
-                if (ModelState.IsValid)
-                {
-                    PassReset p = new PassReset();
-                    p.AutID = Guid.NewGuid().ToString();
-                    p.isAvaliable = true;
-                    p.EMail = u.EMail;
-                    p.UserID = u.UserID;
-                    db.PassResets.Add(p);
-                    db.SaveChanges();
+
+                PassReset p = new PassReset();
+                p.AutID = Guid.NewGuid().ToString();
+                p.isAvaliable = true;
+                p.EMail = u.EMail;
+                p.UserID = u.UserID;
+                db.PassResets.Add(p);
+                db.SaveChanges();
 
 
-                    GMailer.GmailUsername = "se301morgoth@gmail.com";
-                    GMailer.GmailPassword = "301mm301";
+                GMailer.GmailUsername = "se301morgoth@gmail.com";
+                GMailer.GmailPassword = "301mm301";
 
-                    GMailer mailer = new GMailer();
-                    mailer.ToEmail = u.EMail;
-                    mailer.Subject = "Password Reset";
-                    mailer.Body = "A request to reset your password has been sent. <br> Please enter the code below to Change Password page to Change your Password. <br> <a href='localhost.com/Account/ChangePassword'>verify</a> Authentication Code :" + p.AutID;
-                    mailer.IsHtml = true;
-                    mailer.Send();
-                    ViewBag.Message = "A confirmation mail has been sent to you.";
-                    // return RedirectToAction("Index", "Home");
-                }
+                GMailer mailer = new GMailer();
+                mailer.ToEmail = u.EMail;
+                mailer.Subject = "Password Reset";
+                mailer.Body = "A request to reset your password has been sent. <br> Please enter the code below to Change Password page to Change your Password. <br> <a href='localhost.com/Account/ChangePassword'>verify</a> Authentication Code :" + p.AutID;
+                mailer.IsHtml = true;
+                mailer.Send();
+                ViewBag.Message = "A confirmation mail has been sent to you.";
+                // return RedirectToAction("Index", "Home");
+
             }
             return View();
         }
 
-
+        /// <summary>
+        /// this method displays a page where user can enter the verification code sent to them.
+        /// </summary>
+        /// <param name="authID"></param>
+        /// <returns></returns>
         public ActionResult VerifyCode(String authID)
         {
-
             var val = db.PassResets.Where(x => x.AutID == authID);
             var isAvaliable = db.PassResets.Where(x => x.AutID == authID).FirstOrDefault().isAvaliable;
             if (val != null && isAvaliable == true)
@@ -224,14 +219,25 @@ namespace FitnessCenterv2.Controllers
         public ActionResult ChangePassword(String authID)
         {
 
-
             return View(authID);
         }
 
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel p)
         {
-            var isAvaliable = db.PassResets.Where(x => x.AutID == p.passReset.AutID).FirstOrDefault().isAvaliable;
+            var isAvaliable = db.PassResets.First().isAvaliable;
+            try
+            {
+            isAvaliable = db.PassResets.Where(x => x.AutID == p.passReset.AutID).FirstOrDefault().isAvaliable;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "There is no such authentication code.";
+                Console.WriteLine(ex.Message);
+                return View();
+                
+            }
+
             if (isAvaliable == true)
             {
                 var userID = db.PassResets.Where(x => x.AutID == p.passReset.AutID).FirstOrDefault().UserID;

@@ -15,12 +15,8 @@
     <Property Name="Gender" Type="bit" />
     <Property Name="Password" Type="nvarchar" MaxLength="50" />
     <Property Name="BirthDate" Type="date" />
+    <Property Name="WorkoutID" Type="int" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="dsdsa">
-          <Property Name="dsad" Type="nchar" MaxLength="10" />
-        </EntityType>-->
   <EntityType Name="Equipment">
     <Key>
       <PropertyRef Name="ID" />
@@ -69,14 +65,14 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
   </EntityType>
   <EntityType Name="Report">
     <Key>
-      <PropertyRef Name="SenderID" />
-      <PropertyRef Name="ReceiverID" />
+      <PropertyRef Name="ID" />
     </Key>
     <Property Name="SenderID" Type="int" Nullable="false" />
     <Property Name="ReceiverID" Type="int" Nullable="false" />
     <Property Name="Subject" Type="nvarchar" MaxLength="50" />
-    <Property Name="Body" Type="nvarchar" MaxLength="50" />
+    <Property Name="Body" Type="nvarchar" MaxLength="350" />
     <Property Name="SendDate" Type="datetime" />
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="Staff">
     <Key>
@@ -136,7 +132,7 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TrainerID" Type="int" Nullable="false" />
     <Property Name="Time" Type="smalldatetime" />
-    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="int" />
   </EntityType>
   <EntityType Name="TypeTable">
     <Key>
@@ -160,9 +156,9 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="int" Nullable="false" />
-    <Property Name="TrainerID" Type="int" Nullable="false" />
-    <Property Name="Schedule" Type="nvarchar" MaxLength="255" />
+    <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Schedule" Type="nvarchar" MaxLength="50" />
+    <Property Name="TrainerID" Type="int" />
   </EntityType>
   <Association Name="FK_PassReset_User">
     <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -197,30 +193,6 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
       </Principal>
       <Dependent Role="Report">
         <PropertyRef Name="SenderID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Report_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Report" Type="Self.Report" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="Report">
-        <PropertyRef Name="SenderID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Report_User1">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="Report" Type="Self.Report" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="User">
-        <PropertyRef Name="UserID" />
-      </Principal>
-      <Dependent Role="Report">
-        <PropertyRef Name="ReceiverID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -260,8 +232,20 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TrainerSchedule_TypeTable">
+    <End Role="TypeTable" Type="Self.TypeTable" Multiplicity="0..1" />
+    <End Role="TrainerSchedule" Type="Self.TrainerSchedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TypeTable">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TrainerSchedule">
+        <PropertyRef Name="Type" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_WorkoutProgram_Trainer">
-    <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
+    <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
     <End Role="WorkoutProgram" Type="Self.WorkoutProgram" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Trainer">
@@ -299,14 +283,6 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
       <End Role="Staff" EntitySet="Staff" />
       <End Role="Report" EntitySet="Report" />
     </AssociationSet>
-    <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
-      <End Role="User" EntitySet="User" />
-      <End Role="Report" EntitySet="Report" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
-      <End Role="User" EntitySet="User" />
-      <End Role="Report" EntitySet="Report" />
-    </AssociationSet>
     <AssociationSet Name="FK_TrainerCustomerATable_Customer" Association="Self.FK_TrainerCustomerATable_Customer">
       <End Role="Customer" EntitySet="Customer" />
       <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATable" />
@@ -317,6 +293,10 @@ warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary k
     </AssociationSet>
     <AssociationSet Name="FK_TrainerSchedule_Trainer" Association="Self.FK_TrainerSchedule_Trainer">
       <End Role="Trainer" EntitySet="Trainer" />
+      <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TrainerSchedule_TypeTable" Association="Self.FK_TrainerSchedule_TypeTable">
+      <End Role="TypeTable" EntitySet="TypeTable" />
       <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
     </AssociationSet>
     <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="Self.FK_WorkoutProgram_Trainer">

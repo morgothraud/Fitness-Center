@@ -11,12 +11,15 @@ namespace FitnessCenterv2
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     
     public partial class GuestList
     {
         public int GuestID { get; set; }
         public Nullable<int> CustomerID { get; set; }
+        [Required,Display(Name="Guest Name")]
         public string GuestName { get; set; }
+        [Display(Name="Guest Phone")]
         public string GuestPhone { get; set; }
     }
 }

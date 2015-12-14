@@ -1,0 +1,36 @@
+﻿@model IEnumerable<FitnessCenterv2.GuestList>
+<h2>Guest List</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CustomerID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.GuestPhone)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CustomerID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuestName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GuestPhone)
+        </td>
+        <td>
+        </td>
+    </tr>
+}
+
+</table>

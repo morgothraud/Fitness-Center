@@ -8,21 +8,31 @@ namespace FitnessCenterv2.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// returns index.cshtml
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
-
+        /// <summary>
+        /// returns the about.cshtml
+        /// </summary>
+        /// <returns></returns>
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Fitness Center info.";
 
             return View();
         }
-
+        /// <summary>
+        /// returns contact.cshtml
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Contact page.";
 
             return View();
         }
