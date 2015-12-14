@@ -25,29 +25,19 @@ namespace FitnessCenterv2
             throw new UnintentionalCodeFirstException();
         }
     
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
         public virtual DbSet<Customer> Customers { get; set; }
->>>>>>> master
-=======
-        public virtual DbSet<Customer> Customers { get; set; }
->>>>>>> master
         public virtual DbSet<Equipment> Equipments { get; set; }
+        public virtual DbSet<GuestList> GuestLists { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
         public virtual DbSet<PassReset> PassResets { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Staff> Staffs { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Trainer> Trainers { get; set; }
-        public virtual DbSet<User> Users { get; set; }
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<TrainerCustomerATable> TrainerCustomerATables { get; set; }
         public virtual DbSet<TrainerSchedule> TrainerSchedules { get; set; }
-=======
->>>>>>> master
-=======
->>>>>>> master
+        public virtual DbSet<TypeTable> TypeTables { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<WorkoutProgram> WorkoutPrograms { get; set; }
     }
 }

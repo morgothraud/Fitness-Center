@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FitnessCenterv2.TrainerCustomerATable>
+
+@{
+    ViewBag.Title = "getCustomer";
+}
+
+<h2>Your Customers</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Trainer.FirstName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Trainer.FirstName)
+        </td>
+        
+    </tr>
+}
+
+</table>

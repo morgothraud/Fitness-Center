@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FitnessCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FitnessCenterModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="ID" />
@@ -19,7 +19,13 @@
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
           <Property Name="Gender" Type="bit" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="date" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'FitnessCenter.dbo.dsdsa' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="dsdsa">
+          <Property Name="dsad" Type="nchar" MaxLength="10" />
+        </EntityType>-->
         <EntityType Name="Equipment">
           <Key>
             <PropertyRef Name="ID" />
@@ -30,6 +36,15 @@
           <Property Name="IsAvaliable" Type="bit" />
           <Property Name="UnitPrice" Type="int" />
         </EntityType>
+        <EntityType Name="GuestList">
+          <Key>
+            <PropertyRef Name="GuestID" />
+          </Key>
+          <Property Name="GuestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="GuestName" Type="varchar" MaxLength="50" />
+          <Property Name="GuestPhone" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Manager">
           <Key>
             <PropertyRef Name="ID" />
@@ -37,7 +52,7 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
-          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthDate" Type="date" />
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
           <Property Name="City" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
@@ -76,12 +91,12 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
           <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="Title" Type="nvarchar" MaxLength="50" />
-          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthDate" Type="date" />
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
           <Property Name="Gender" Type="bit" />
-          <Property Name="HireDate" Type="datetime" />
+          <Property Name="HireDate" Type="date" />
           <Property Name="Salary" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
         </EntityType>
@@ -105,7 +120,7 @@
           <Property Name="Address" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
-          <Property Name="BirthDate" Type="datetime" />
+          <Property Name="BirthDate" Type="date" />
           <Property Name="Gender" Type="bit" />
           <Property Name="HireDate" Type="datetime" />
           <Property Name="Salary" Type="decimal" Precision="18" Scale="0" />
@@ -113,11 +128,11 @@
         </EntityType>
         <EntityType Name="TrainerCustomerATable">
           <Key>
-            <PropertyRef Name="TrainerID" />
-            <PropertyRef Name="CustomerID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="TrainerID" Type="int" Nullable="false" />
-          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="TrainerID" Type="int" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="TrainerSchedule">
           <Key>
@@ -126,6 +141,13 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TrainerID" Type="int" Nullable="false" />
           <Property Name="Time" Type="smalldatetime" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TypeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="User">
@@ -138,6 +160,14 @@
           <Property Name="EMail" Type="nvarchar" MaxLength="50" />
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="WorkoutProgram">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TrainerID" Type="int" Nullable="false" />
+          <Property Name="Schedule" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK_PassReset_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -160,6 +190,18 @@
             </Principal>
             <Dependent Role="PassReset">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Staff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="SenderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -188,7 +230,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TrainerCustomerATable_Customer">
-          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
           <End Role="TrainerCustomerATable" Type="Self.TrainerCustomerATable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Customer">
@@ -200,7 +242,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TrainerCustomerATable_Trainer">
-          <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
+          <End Role="Trainer" Type="Self.Trainer" Multiplicity="0..1" />
           <End Role="TrainerCustomerATable" Type="Self.TrainerCustomerATable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Trainer">
@@ -223,9 +265,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_WorkoutProgram_Trainer">
+          <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
+          <End Role="WorkoutProgram" Type="Self.WorkoutProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WorkoutProgram">
+              <PropertyRef Name="TrainerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FitnessCenterModelStoreContainer">
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Equipment" EntityType="Self.Equipment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuestList" EntityType="Self.GuestList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manager" EntityType="Self.Manager" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PassReset" EntityType="Self.PassReset" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
@@ -234,7 +289,9 @@
           <EntitySet Name="Trainer" EntityType="Self.Trainer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrainerCustomerATable" EntityType="Self.TrainerCustomerATable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrainerSchedule" EntityType="Self.TrainerSchedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeTable" EntityType="Self.TypeTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WorkoutProgram" EntityType="Self.WorkoutProgram" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
             <End Role="User" EntitySet="User" />
             <End Role="PassReset" EntitySet="PassReset" />
@@ -242,6 +299,10 @@
           <AssociationSet Name="FK_PassReset_User1" Association="Self.FK_PassReset_User1">
             <End Role="User" EntitySet="User" />
             <End Role="PassReset" EntitySet="PassReset" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Staff" Association="Self.FK_Report_Staff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Report" EntitySet="Report" />
           </AssociationSet>
           <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
             <End Role="User" EntitySet="User" />
@@ -263,12 +324,84 @@
             <End Role="Trainer" EntitySet="Trainer" />
             <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
           </AssociationSet>
+          <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="Self.FK_WorkoutProgram_Trainer">
+            <End Role="Trainer" EntitySet="Trainer" />
+            <End Role="WorkoutProgram" EntitySet="WorkoutProgram" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FitnessCenterModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="FitnessCenterModel.Customer" />
+          <EntitySet Name="Equipments" EntityType="FitnessCenterModel.Equipment" />
+          <EntitySet Name="GuestLists" EntityType="FitnessCenterModel.GuestList" />
+          <EntitySet Name="Managers" EntityType="FitnessCenterModel.Manager" />
+          <EntitySet Name="PassResets" EntityType="FitnessCenterModel.PassReset" />
+          <EntitySet Name="Reports" EntityType="FitnessCenterModel.Report" />
+          <EntitySet Name="Staffs" EntityType="FitnessCenterModel.Staff" />
+          <EntitySet Name="sysdiagrams" EntityType="FitnessCenterModel.sysdiagram" />
+          <EntitySet Name="Trainers" EntityType="FitnessCenterModel.Trainer" />
+          <EntitySet Name="TrainerCustomerATables" EntityType="FitnessCenterModel.TrainerCustomerATable" />
+          <EntitySet Name="TrainerSchedules" EntityType="FitnessCenterModel.TrainerSchedule" />
+          <EntitySet Name="TypeTables" EntityType="FitnessCenterModel.TypeTable" />
+          <EntitySet Name="Users" EntityType="FitnessCenterModel.User" />
+          <EntitySet Name="WorkoutPrograms" EntityType="FitnessCenterModel.WorkoutProgram" />
+          <AssociationSet Name="FK_TrainerCustomerATable_Customer" Association="FitnessCenterModel.FK_TrainerCustomerATable_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PassReset_User" Association="FitnessCenterModel.FK_PassReset_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PassReset" EntitySet="PassResets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PassReset_User1" Association="FitnessCenterModel.FK_PassReset_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PassReset" EntitySet="PassResets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_Staff" Association="FitnessCenterModel.FK_Report_Staff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_User" Association="FitnessCenterModel.FK_Report_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_User1" Association="FitnessCenterModel.FK_Report_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrainerCustomerATable_Trainer" Association="FitnessCenterModel.FK_TrainerCustomerATable_Trainer">
+            <End Role="Trainer" EntitySet="Trainers" />
+            <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrainerSchedule_Trainer" Association="FitnessCenterModel.FK_TrainerSchedule_Trainer">
+            <End Role="Trainer" EntitySet="Trainers" />
+            <End Role="TrainerSchedule" EntitySet="TrainerSchedules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="FitnessCenterModel.FK_WorkoutProgram_Trainer">
+            <End Role="Trainer" EntitySet="Trainers" />
+            <End Role="WorkoutProgram" EntitySet="WorkoutPrograms" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
+          <Property Name="CreditCardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="Boolean" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="TrainerCustomerATables" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Customer" FromRole="Customer" ToRole="TrainerCustomerATable" />
+        </EntityType>
         <EntityType Name="Equipment">
           <Key>
             <PropertyRef Name="ID" />
@@ -279,6 +412,15 @@
           <Property Name="IsAvaliable" Type="Boolean" />
           <Property Name="UnitPrice" Type="Int32" />
         </EntityType>
+        <EntityType Name="GuestList">
+          <Key>
+            <PropertyRef Name="GuestID" />
+          </Key>
+          <Property Name="GuestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="GuestName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GuestPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         <EntityType Name="Manager">
           <Key>
             <PropertyRef Name="ID" />
@@ -286,7 +428,7 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -305,8 +447,8 @@
           <Property Name="AutID" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="isAvaliable" Type="Boolean" />
           <Property Name="oldPass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="Self.FK_PassReset_User" FromRole="PassReset" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.FK_PassReset_User1" FromRole="PassReset" ToRole="User" />
+          <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="PassReset" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="PassReset" ToRole="User" />
         </EntityType>
         <EntityType Name="Report">
           <Key>
@@ -318,8 +460,9 @@
           <Property Name="Subject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Body" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Report_User" FromRole="Report" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.FK_Report_User1" FromRole="Report" ToRole="User" />
+          <NavigationProperty Name="Staff" Relationship="FitnessCenterModel.FK_Report_Staff" FromRole="Report" ToRole="Staff" />
+          <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_Report_User" FromRole="Report" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="Report" ToRole="User" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -329,20 +472,21 @@
           <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="Boolean" />
-          <Property Name="HireDate" Type="DateTime" Precision="3" />
+          <Property Name="HireDate" Type="DateTime" Precision="0" />
           <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_Staff" FromRole="Staff" ToRole="Report" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
             <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="principal_id" Type="Int32" Nullable="false" />
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
@@ -358,13 +502,41 @@
           <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="Gender" Type="Boolean" />
           <Property Name="HireDate" Type="DateTime" Precision="3" />
           <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Customers" Relationship="FitnessCenterModel.TrainerCustomerATable" FromRole="Trainer" ToRole="Customer" />
+          <NavigationProperty Name="TrainerCustomerATables" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Trainer" FromRole="Trainer" ToRole="TrainerCustomerATable" />
           <NavigationProperty Name="TrainerSchedules" Relationship="FitnessCenterModel.FK_TrainerSchedule_Trainer" FromRole="Trainer" ToRole="TrainerSchedule" />
+          <NavigationProperty Name="WorkoutPrograms" Relationship="FitnessCenterModel.FK_WorkoutProgram_Trainer" FromRole="Trainer" ToRole="WorkoutProgram" />
+        </EntityType>
+        <EntityType Name="TrainerCustomerATable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="TrainerID" Type="Int32" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Customer" FromRole="TrainerCustomerATable" ToRole="Customer" />
+          <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Trainer" FromRole="TrainerCustomerATable" ToRole="Trainer" />
+        </EntityType>
+        <EntityType Name="TrainerSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrainerID" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Precision="0" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_TrainerSchedule_Trainer" FromRole="TrainerSchedule" ToRole="Trainer" />
+        </EntityType>
+        <EntityType Name="TypeTable">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -376,161 +548,71 @@
           <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PassResets" Relationship="Self.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
-          <NavigationProperty Name="PassResets1" Relationship="Self.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
-          <NavigationProperty Name="Reports" Relationship="Self.FK_Report_User" FromRole="User" ToRole="Report" />
-          <NavigationProperty Name="Reports1" Relationship="Self.FK_Report_User1" FromRole="User" ToRole="Report" />
+          <NavigationProperty Name="PassResets" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="PassResets1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_User" FromRole="User" ToRole="Report" />
+          <NavigationProperty Name="Reports1" Relationship="FitnessCenterModel.FK_Report_User1" FromRole="User" ToRole="Report" />
         </EntityType>
-        <Association Name="FK_PassReset_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="PassReset">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PassReset_User1">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="PassReset">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <Association Name="FK_Report_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Report" Type="Self.Report" Multiplicity="*" />
-=======
-        <Association Name="FK_PassReset_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
->>>>>>> master
-=======
-        <Association Name="FK_PassReset_User">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
->>>>>>> master
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="PassReset">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <Association Name="FK_Report_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Report" Type="Self.Report" Multiplicity="*" />
-=======
-        <Association Name="FK_PassReset_User1">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
->>>>>>> master
-=======
-        <Association Name="FK_PassReset_User1">
-          <End Role="User" Type="Self.User" Multiplicity="0..1" />
-          <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
->>>>>>> master
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="PassReset">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-<<<<<<< HEAD
-        </Association>
-<<<<<<< HEAD
-        <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
-          <EntitySet Name="Managers" EntityType="Self.Manager" />
-          <EntitySet Name="PassResets" EntityType="Self.PassReset" />
-          <EntitySet Name="Reports" EntityType="Self.Report" />
-          <EntitySet Name="Staffs" EntityType="Self.Staff" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Trainers" EntityType="Self.Trainer" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PassReset_User1" Association="Self.FK_PassReset_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-          <EntitySet Name="Customers" EntityType="FitnessCenterModel.Customer" />
-          <AssociationSet Name="TrainerCustomerATable" Association="FitnessCenterModel.TrainerCustomerATable">
-            <End Role="Customer" EntitySet="Customers" />
-            <End Role="Trainer" EntitySet="Trainers" />
-          </AssociationSet>
-          <EntitySet Name="TrainerSchedules" EntityType="FitnessCenterModel.TrainerSchedule" />
-          <AssociationSet Name="FK_TrainerSchedule_Trainer" Association="FitnessCenterModel.FK_TrainerSchedule_Trainer">
-            <End Role="Trainer" EntitySet="Trainers" />
-            <End Role="TrainerSchedule" EntitySet="TrainerSchedules" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="Customer">
+        <EntityType Name="WorkoutProgram">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="RegistrationDate" Type="DateTime" Precision="3" />
-          <Property Name="CreditCardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Gender" Type="Boolean" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Trainers" Relationship="FitnessCenterModel.TrainerCustomerATable" FromRole="Customer" ToRole="Trainer" />
-        </EntityType>
-        <Association Name="TrainerCustomerATable">
-          <End Type="FitnessCenterModel.Customer" Role="Customer" Multiplicity="*" />
-          <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="*" />
-        </Association>
-        <EntityType Name="TrainerSchedule">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Int32" Nullable="false" />
           <Property Name="TrainerID" Type="Int32" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Precision="0" />
-          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_TrainerSchedule_Trainer" FromRole="TrainerSchedule" ToRole="Trainer" />
+          <Property Name="Schedule" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_WorkoutProgram_Trainer" FromRole="WorkoutProgram" ToRole="Trainer" />
         </EntityType>
-        <Association Name="FK_TrainerSchedule_Trainer">
-          <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="1" />
-          <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
-=======
-=======
+        <Association Name="FK_TrainerCustomerATable_Customer">
+          <End Type="FitnessCenterModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.TrainerCustomerATable" Role="TrainerCustomerATable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TrainerCustomerATable">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
->>>>>>> master
+        <Association Name="FK_PassReset_User">
+          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PassReset">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PassReset_User1">
+          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.PassReset" Role="PassReset" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PassReset">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_Staff">
+          <End Type="FitnessCenterModel.Staff" Role="Staff" Multiplicity="1" />
+          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Report_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
+          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="User">
               <PropertyRef Name="UserID" />
@@ -541,182 +623,63 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Report_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Report" Type="Self.Report" Multiplicity="*" />
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
+          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
+          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReceiverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrainerCustomerATable_Trainer">
+          <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.TrainerCustomerATable" Role="TrainerCustomerATable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Trainer">
               <PropertyRef Name="ID" />
             </Principal>
-<<<<<<< HEAD
-<<<<<<< HEAD
-            <Dependent Role="TrainerSchedule">
+            <Dependent Role="TrainerCustomerATable">
               <PropertyRef Name="TrainerID" />
-=======
-            <Dependent Role="Report">
-              <PropertyRef Name="ReceiverID" />
->>>>>>> master
-=======
-            <Dependent Role="Report">
-              <PropertyRef Name="ReceiverID" />
->>>>>>> master
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="FitnessCenterEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="Equipments" EntityType="Self.Equipment" />
-          <EntitySet Name="Managers" EntityType="Self.Manager" />
-          <EntitySet Name="PassResets" EntityType="Self.PassReset" />
-          <EntitySet Name="Reports" EntityType="Self.Report" />
-          <EntitySet Name="Staffs" EntityType="Self.Staff" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="Trainers" EntityType="Self.Trainer" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Customer_Trainer" Association="Self.FK_Customer_Trainer">
-            <End Role="Trainer" EntitySet="Trainers" />
-            <End Role="Customer" EntitySet="Customers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PassReset_User1" Association="Self.FK_PassReset_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="PassReset" EntitySet="PassResets" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Report_User1" Association="Self.FK_Report_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        <Association Name="FK_TrainerSchedule_Trainer">
+          <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="1" />
+          <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TrainerSchedule">
+              <PropertyRef Name="TrainerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WorkoutProgram_Trainer">
+          <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="1" />
+          <End Type="FitnessCenterModel.WorkoutProgram" Role="WorkoutProgram" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="WorkoutProgram">
+              <PropertyRef Name="TrainerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="FitnessCenterModelStoreContainer" CdmEntityContainer="FitnessCenterEntities">
-          <EntitySetMapping Name="Equipments">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Equipment">
-              <MappingFragment StoreEntitySet="Equipment">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="IsAvaliable" ColumnName="IsAvaliable" />
-                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Managers">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Manager">
-              <MappingFragment StoreEntitySet="Manager">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PassResets">
-            <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
-              <MappingFragment StoreEntitySet="PassReset">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="AutID" ColumnName="AutID" />
-                <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
-                <ScalarProperty Name="oldPass" ColumnName="oldPass" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Reports">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Report">
-              <MappingFragment StoreEntitySet="Report">
-                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
-                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
-                <ScalarProperty Name="Subject" ColumnName="Subject" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Staffs">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Staff">
-              <MappingFragment StoreEntitySet="Staff">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="FitnessCenterModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Trainers">
-            <EntityTypeMapping TypeName="FitnessCenterModel.Trainer">
-              <MappingFragment StoreEntitySet="Trainer">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
-                <ScalarProperty Name="Gender" ColumnName="Gender" />
-                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
-                <ScalarProperty Name="Salary" ColumnName="Salary" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="FitnessCenterModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="EMail" ColumnName="EMail" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-<<<<<<< HEAD
-<<<<<<< HEAD
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="EMail" ColumnName="EMail" />
@@ -730,14 +693,122 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="TrainerCustomerATable" TypeName="FitnessCenterModel.TrainerCustomerATable" StoreEntitySet="TrainerCustomerATable">
-            <EndProperty Name="Trainer">
-              <ScalarProperty Name="ID" ColumnName="TrainerID" />
-            </EndProperty>
-            <EndProperty Name="Customer">
-              <ScalarProperty Name="ID" ColumnName="CustomerID" />
-            </EndProperty>
-          </AssociationSetMapping>
+          <EntitySetMapping Name="Equipments">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Equipment">
+              <MappingFragment StoreEntitySet="Equipment">
+                <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+                <ScalarProperty Name="IsAvaliable" ColumnName="IsAvaliable" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestLists">
+            <EntityTypeMapping TypeName="FitnessCenterModel.GuestList">
+              <MappingFragment StoreEntitySet="GuestList">
+                <ScalarProperty Name="GuestPhone" ColumnName="GuestPhone" />
+                <ScalarProperty Name="GuestName" ColumnName="GuestName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="GuestID" ColumnName="GuestID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Managers">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Manager">
+              <MappingFragment StoreEntitySet="Manager">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PassResets">
+            <EntityTypeMapping TypeName="FitnessCenterModel.PassReset">
+              <MappingFragment StoreEntitySet="PassReset">
+                <ScalarProperty Name="oldPass" ColumnName="oldPass" />
+                <ScalarProperty Name="isAvaliable" ColumnName="isAvaliable" />
+                <ScalarProperty Name="AutID" ColumnName="AutID" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="SendDate" ColumnName="SendDate" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
+                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FitnessCenterModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trainers">
+            <EntityTypeMapping TypeName="FitnessCenterModel.Trainer">
+              <MappingFragment StoreEntitySet="Trainer">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="HireDate" ColumnName="HireDate" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrainerCustomerATables">
+            <EntityTypeMapping TypeName="FitnessCenterModel.TrainerCustomerATable">
+              <MappingFragment StoreEntitySet="TrainerCustomerATable">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TrainerSchedules">
             <EntityTypeMapping TypeName="FitnessCenterModel.TrainerSchedule">
               <MappingFragment StoreEntitySet="TrainerSchedule">
@@ -748,10 +819,35 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-=======
->>>>>>> master
-=======
->>>>>>> master
+          <EntitySetMapping Name="TypeTables">
+            <EntityTypeMapping TypeName="FitnessCenterModel.TypeTable">
+              <MappingFragment StoreEntitySet="TypeTable">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="FitnessCenterModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EMail" ColumnName="EMail" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WorkoutPrograms">
+            <EntityTypeMapping TypeName="FitnessCenterModel.WorkoutProgram">
+              <MappingFragment StoreEntitySet="WorkoutProgram">
+                <ScalarProperty Name="Schedule" ColumnName="Schedule" />
+                <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

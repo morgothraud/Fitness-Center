@@ -20,6 +20,7 @@ namespace FitnessCenterv2
         public string Body { get; set; }
         public Nullable<System.DateTime> SendDate { get; set; }
     
+        public virtual Staff Staff { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
     }

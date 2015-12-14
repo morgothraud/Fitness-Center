@@ -71,24 +71,6 @@ namespace FitnessCenterv2.Controllers
                 return View();
             }
             else {
-<<<<<<< HEAD
-<<<<<<< HEAD
-                FormsAuthentication.SetAuthCookie(c.EMail, false);
-                Session["UserID"] = user.UserID.ToString();
-                Session["FirstName"] = user.FirstName.ToString();
-                if (user.Role == "Manager")
-                {
-                    return RedirectToAction("Index", "Manager");
-                }
-                if (user.Role == "Staff")
-                {
-                    return RedirectToAction("Index", "Staff");
-                }
-                
-
-=======
-=======
->>>>>>> master
                 FormsAuthentication.SetAuthCookie(c.EMail,false);
                 Session["UserID"] = user.UserID.ToString();
                 Session["FirstName"] = user.FirstName.ToString();
@@ -96,10 +78,8 @@ namespace FitnessCenterv2.Controllers
                 return RedirectToAction("Index", "Manager");
                 if (user.Role == "Staff")
                 return RedirectToAction("Index","Staff");
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
+                if(user.Role == "Trainer")
+                return RedirectToAction("Index", "Trainer");
             }
             return View();
         }
@@ -216,6 +196,7 @@ namespace FitnessCenterv2.Controllers
 
         public ActionResult VerifyCode(String authID)
         {
+
             var val = db.PassResets.Where(x => x.AutID == authID);
             var isAvaliable = db.PassResets.Where(x => x.AutID == authID).FirstOrDefault().isAvaliable;
             if (val != null && isAvaliable == true)

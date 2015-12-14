@@ -14,10 +14,12 @@ namespace FitnessCenterv2
     
     public partial class Trainer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Trainer()
         {
-            this.Customers = new HashSet<Customer>();
+            this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
             this.TrainerSchedules = new HashSet<TrainerSchedule>();
+            this.WorkoutPrograms = new HashSet<WorkoutProgram>();
         }
     
         public int ID { get; set; }
@@ -32,7 +34,11 @@ namespace FitnessCenterv2
         public Nullable<decimal> Salary { get; set; }
         public string Password { get; set; }
     
-        public virtual ICollection<Customer> Customers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TrainerSchedule> TrainerSchedules { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkoutProgram> WorkoutPrograms { get; set; }
     }
 }
