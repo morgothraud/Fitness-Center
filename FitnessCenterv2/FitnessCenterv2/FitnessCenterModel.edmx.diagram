@@ -4,29 +4,30 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1a518c5205954e88848a5c97a7714198" Name="Diagram1" ZoomLevel="67">
-        <EntityTypeShape EntityType="FitnessCenterModel.Customer" Width="1.5" PointX="0.75" PointY="10.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Equipment" Width="1.5" PointX="5.75" PointY="5.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.GuestList" Width="1.5" PointX="7.75" PointY="4.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Manager" Width="1.5" PointX="7.75" PointY="7.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.PassReset" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Report" Width="1.5" PointX="8" PointY="1.625" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Staff" Width="1.5" PointX="5.75" PointY="1" />
-        <EntityTypeShape EntityType="FitnessCenterModel.sysdiagram" Width="1.5" PointX="9.75" PointY="4.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.Trainer" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.TrainerCustomerATable" Width="1.5" PointX="3" PointY="6.5" />
-        <EntityTypeShape EntityType="FitnessCenterModel.TrainerSchedule" Width="1.5" PointX="3" PointY="9.375" />
-        <EntityTypeShape EntityType="FitnessCenterModel.TypeTable" Width="1.5" PointX="0.75" PointY="15.75" />
-        <EntityTypeShape EntityType="FitnessCenterModel.User" Width="1.5" PointX="0.75" PointY="1" />
-        <EntityTypeShape EntityType="FitnessCenterModel.WorkoutProgram" Width="1.5" PointX="9.75" PointY="7.75" />
+      <Diagram DiagramId="1a518c5205954e88848a5c97a7714198" Name="Diagram1" ZoomLevel="88">
+        <EntityTypeShape EntityType="FitnessCenterModel.Customer" Width="1.5" PointX="0.75" PointY="9" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Equipment" Width="1.5" PointX="7.75" PointY="9.375" />
+        <EntityTypeShape EntityType="FitnessCenterModel.GuestList" Width="1.5" PointX="3" PointY="13.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Manager" Width="1.5" PointX="9.75" PointY="9.375" />
+        <EntityTypeShape EntityType="FitnessCenterModel.PassReset" Width="1.5" PointX="8" PointY="1.625" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Report" Width="1.5" PointX="8.875" PointY="6.25" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Staff" Width="1.5" PointX="5.75" PointY="5.625" />
+        <EntityTypeShape EntityType="FitnessCenterModel.sysdiagram" Width="1.5" PointX="10.75" PointY="1.375" />
+        <EntityTypeShape EntityType="FitnessCenterModel.Trainer" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.TrainerCustomerATable" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="FitnessCenterModel.TrainerSchedule" Width="1.5" PointX="3" PointY="4.5" />
+        <EntityTypeShape EntityType="FitnessCenterModel.TypeTable" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="FitnessCenterModel.User" Width="1.5" PointX="5.5" PointY="1.5" />
+        <EntityTypeShape EntityType="FitnessCenterModel.WorkoutProgram" Width="1.5" PointX="3" PointY="10.25" />
+        <AssociationConnector Association="FitnessCenterModel.FK_GuestList_Customer1" />
         <AssociationConnector Association="FitnessCenterModel.FK_TrainerCustomerATable_Customer" />
         <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User" />
         <AssociationConnector Association="FitnessCenterModel.FK_PassReset_User1" />
-        <AssociationConnector Association="FitnessCenterModel.FK_Report_Staff" />
         <AssociationConnector Association="FitnessCenterModel.FK_TrainerCustomerATable_Trainer" />
         <AssociationConnector Association="FitnessCenterModel.FK_TrainerSchedule_Trainer" />
-        <AssociationConnector Association="FitnessCenterModel.FK_TrainerSchedule_TypeTable" />
         <AssociationConnector Association="FitnessCenterModel.FK_WorkoutProgram_Trainer" />
+        <AssociationConnector Association="FitnessCenterModel.FK_TrainerSchedule_TypeTable" />
+        <AssociationConnector Association="FitnessCenterModel.FK_Report_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

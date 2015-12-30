@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessCenterv2.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -99,6 +100,45 @@ namespace FitnessCenterv2.Controllers
                 return RedirectToAction("ManagePrograms", "Trainer");
             }
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult MySchedule()
+        {
+            User u = db.Users.Find(int.Parse(Session["UserID"].ToString()));
+            Trainer t = db.Trainers.Where(x => x.EMail == u.EMail).FirstOrDefault();
+            return View(db.TrainerSchedules.Where(x=>x.TrainerID==t.ID).ToList());
+        }
+
+
+        [HttpGet]
+        public ActionResult MyProfile()
+        {
+            User first = db.Users.Find(int.Parse(Session["UserID"].ToString()));
+            Trainer c = db.Trainers.Where(x => x.EMail == first.EMail).FirstOrDefault();
+            return View(c);
+        }
+
+        [HttpPost]
+        public ActionResult MyProfile(Trainer c)
+        {
+            {
+                var toBeUpdated = db.Trainers.Find(c.ID);
+                toBeUpdated.Address = c.Address;
+                toBeUpdated.Password = c.Password;
+                toBeUpdated.Phone = c.Phone;
+                db.Entry(toBeUpdated).CurrentValues.SetValues(toBeUpdated);
+                db.SaveChanges();
+
+                using (FitnessCenterEntities ff = new FitnessCenterEntities())
+                {
+                    User first = ff.Users.Find(int.Parse(Session["UserID"].ToString()));
+                    first.Password = c.Password;
+                    ff.Entry(first).CurrentValues.SetValues(first);
+                    ff.SaveChanges();
+                }
+                return RedirectToAction("MyProfile", "Trainer");
+            }
         }
     }
 }

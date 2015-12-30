@@ -72,7 +72,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Gender)
+            @if(Model.Gender == true) {<p>Male</p>}
+            @if(Model.Gender == false) {<p>Female</p>}
         </dd>
  
         <dt>
@@ -90,7 +91,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to List", "ManageCustomer","Staff")
         </div>
     }
 </div>

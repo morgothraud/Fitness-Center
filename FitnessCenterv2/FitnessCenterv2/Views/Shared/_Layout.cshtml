@@ -32,27 +32,35 @@
                     @if (Session["UserID"] == null)
                     {
 
-
                         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
                         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 
                     }
                     @if (Session["UserID"] != null)
                     {
-
-                        if (Session["Role"].Equals("Manager"))                        {
+                        if (Session["Role"].Equals("Manager"))
+                        {
+                            <li>@Html.ActionLink("" + Session["UserName"], "MyProfile", "Manager", routeValues: null, htmlAttributes: new { id = Session["UserID"] })</li>
                             <li>@Html.ActionLink("Control Panel", "Index", "Manager", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                         if (Session["Role"].Equals("Customer"))
                         {
-                            <li>@Html.ActionLink("Control Panel", "Index", "Manager", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                            <li>@Html.ActionLink("" + Session["UserName"], "MyProfile", "Customer", routeValues: null, htmlAttributes: new { id = Session["UserID"] })</li>
+                            <li>@Html.ActionLink("Control Panel", "Index", "Customer", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+                        }
+                        if (Session["Role"].Equals("Expired"))
+                        {
+                            
+                            <li>@Html.ActionLink("Extend Membership", "refreshMemberShip", "Customer", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                         if (Session["Role"].Equals("Staff"))
                         {
+                            <li>@Html.ActionLink("" + Session["UserName"], "MyProfile", "Staff", routeValues: null, htmlAttributes: new { id = Session["UserID"] })</li>
                             <li>@Html.ActionLink("Control Panel", "Index", "Staff", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
                         if (Session["Role"].Equals("Trainer"))
                         {
+                            <li>@Html.ActionLink("" + Session["UserName"], "MyProfile", "Trainer", routeValues: null, htmlAttributes: new { id = Session["UserID"] })</li>
                             <li>@Html.ActionLink("Control Panel", "Index", "Trainer", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                         }
 

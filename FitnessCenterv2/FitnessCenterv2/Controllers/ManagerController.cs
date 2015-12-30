@@ -1,6 +1,8 @@
-﻿using System;
+﻿using FitnessCenterv2.Models;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -41,7 +43,9 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult AddStaff(Staff t)
         {
-            if (ModelState.IsValid)
+            User search = db.Users.Where(x => x.EMail == t.EMail).FirstOrDefault();
+
+            if (ModelState.IsValid && search == null)
             {
                 t.HireDate = DateTime.Now;
                 db.Staffs.Add(t);
@@ -58,7 +62,10 @@ namespace FitnessCenterv2.Controllers
                 db.SaveChanges();
                 TempData["Success"] = u.FirstName + " " + u.LastName + " added successfully.";
                 return RedirectToAction("ManageStaff", "Manager");
+
             }
+            if (search != null)
+                TempData["Error"] = search.EMail + " is already registered to the system.";
             return View();
         }
 
@@ -92,29 +99,37 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult EditStaff(Staff s)
         {
-
-
             if (ModelState.IsValid)
             {
-                var toBeUpdated = db.Staffs.Find(s.ID);
-                db.Entry(toBeUpdated).CurrentValues.SetValues(s);
-                db.SaveChanges();
+                User search = db.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
+                Staff sys = db.Staffs.Where(x => x.EMail == s.EMail).FirstOrDefault();
+                if (s.Equals(sys)) return RedirectToAction("ManageStaff", "Manager");
 
-                var toBeUpdatedfromUsers = db.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
-                User u = new User();
-                u = toBeUpdatedfromUsers;
-                u.EMail = s.EMail;
-                u.FirstName = s.FirstName;
-                u.LastName = s.LastName;
-                u.Password = s.Password;
+                else if (search != null)
+                {
+                    TempData["Error"] = search.EMail + " is already registered to the system.";
+                    return View();
+                }
+                else if (search != null && search.EMail == s.EMail)
+                {
+                    var toBeUpdatedfromUsers = db.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
+                    var toBeUpdated = db.Staffs.Find(s.ID);
+                    db.Entry(toBeUpdated).CurrentValues.SetValues(s);
+                    db.SaveChanges();
 
-                db.Entry(toBeUpdatedfromUsers).CurrentValues.SetValues(u);
-
-                TempData["Success"] = u.FirstName + " " + u.LastName + " is edited successfully.";
-                return RedirectToAction("ManageStaff", "Manager");
+                    using (FitnessCenterEntities ff = new FitnessCenterEntities())
+                    {
+                        toBeUpdatedfromUsers.EMail = s.EMail;
+                        toBeUpdatedfromUsers.FirstName = s.FirstName;
+                        toBeUpdatedfromUsers.LastName = s.LastName;
+                        toBeUpdatedfromUsers.Password = s.Password;
+                        ff.Entry(toBeUpdatedfromUsers).CurrentValues.SetValues(toBeUpdatedfromUsers);
+                    }
+                    TempData["Success"] = s.FirstName + " " + s.LastName + " is edited successfully.";
+                    return RedirectToAction("ManageStaff", "Manager");
+                }
             }
-
-            return View(s);
+            return View();
         }
         /// <summary>
         /// This method opens a page that Manager can delete Staff.
@@ -138,25 +153,51 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult DeleteStaff(Staff s)
         {
-            if (ModelState.IsValid)
-            {
-                using(FitnessCenterEntities fe = new FitnessCenterEntities()) {
-                     s.EMail = fe.Staffs.Where(x => x.ID == s.ID).FirstOrDefault().EMail;
 
-                User u = fe.Users.AsNoTracking().Single(x => x.EMail == s.EMail);
-                fe.Users.Attach(u);
-                fe.Users.Remove(u);
-                fe.SaveChanges();
-                TempData["Success"] = u.FirstName + " " + u.LastName + " deleted successfully.";
+            using (FitnessCenterEntities fe = new FitnessCenterEntities())
+            {
+                s.EMail = fe.Staffs.Where(x => x.ID == s.ID).FirstOrDefault().EMail;
+
+                User u = fe.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
+                if (u != null)
+                {
+                    fe.Users.Attach(u);
+                    fe.Users.Remove(u);
+                    fe.SaveChanges();
+
                 }
- 
-                db.Staffs.Attach(s);
-                db.Staffs.Remove(s);
-                db.SaveChanges();
-                
-                return RedirectToAction("ManageStaff", "Manager");
+
             }
-            return View();
+
+            //birden ço kreport u olursa hepsini silmek lazım     
+
+            /*      using (FitnessCenterEntities fe2 = new FitnessCenterEntities())
+                  {
+                      Report r = db.Reports.Find(s.ID);
+                      if (r != null)
+                      {
+                         // ((IObjectContextAdapter)fe2).ObjectContext.Detach(s);
+                          fe2.Reports.Attach(db.Reports.Where(x=>x.SenderID == s.ID).FirstOrDefault());
+                          fe2.Reports.Remove(r);
+                          fe2.SaveChanges();
+                   
+                      }
+                  }*/
+
+            Report r = db.Reports.Where(x => x.SenderID == s.ID).FirstOrDefault();
+            if (r != null)
+            {
+                db.Reports.Attach(r);
+                db.Reports.Remove(r);
+                db.SaveChanges();
+            }
+            db.Staffs.Attach(s);
+            db.Staffs.Remove(s);
+            db.SaveChanges();
+            TempData["Success"] = "Deleted successfully.";
+            return RedirectToAction("ManageStaff", "Manager");
+
+
         }
 
 
@@ -226,9 +267,10 @@ namespace FitnessCenterv2.Controllers
             if (ModelState.IsValid)
             {
                 var toBeUpdated = db.Equipments.Find(s.ID);
+
                 db.Entry(toBeUpdated).CurrentValues.SetValues(s);
                 db.SaveChanges();
-                TempData["Success"] = s.Name+ " edited successfully.";
+                TempData["Success"] = s.Name + " edited successfully.";
                 return RedirectToAction("ManageEquipment", "Manager");
             }
 
@@ -255,15 +297,14 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult DeleteEquipment(Equipment s)
         {
-            if (ModelState.IsValid)
-            {
-                db.Equipments.Attach(s);
-                db.Equipments.Remove(s);
-                db.SaveChanges();
-                TempData["Success"] = s.Name + " deleted successfully.";
-                return RedirectToAction("ManageEquipment", "Manager");
-            }
-            return View();
+
+            db.Equipments.Attach(s);
+            db.Equipments.Remove(s);
+            db.SaveChanges();
+            TempData["Success"] = s.Name + " deleted successfully.";
+            return RedirectToAction("ManageEquipment", "Manager");
+
+
         }
 
         /// <summary>
@@ -274,28 +315,62 @@ namespace FitnessCenterv2.Controllers
         public ActionResult ReportList()
         {
 
-           int currentUserID = int.Parse(Session["UserID"].ToString());
-           List<Report> reportList = db.Reports.Where(x=>x.ReceiverID == currentUserID).ToList();
-  
-           //   Staff firstName = db.Staffs.FirstOrDefault(x => x.ID == r.SenderID);
+            int currentUserID = int.Parse(Session["UserID"].ToString());
+            List<Report> reportList = db.Reports.Where(x => x.ReceiverID == currentUserID).ToList();
+
+            //   Staff firstName = db.Staffs.FirstOrDefault(x => x.ID == r.SenderID);
 
             ViewBag.Reports = new SelectList(reportList, "ID", "SenderID");
             ViewBag.Staffs = new SelectList(db.Staffs, "ID", "FirstName");
 
             var ent = (from r in db.Reports
-                              join s in db.Staffs on r.SenderID equals s.ID
-                              where r.SenderID == s.ID
-                              select new
-                              {
-                                  r.Body,
-                                  r.Subject,
-                                  s.FirstName
-                              }).ToList();
+                       join s in db.Staffs on r.SenderID equals s.ID
+                       where r.SenderID == s.ID
+                       select new
+                       {
+                           r.Body,
+                           r.Subject,
+                           s.FirstName
+                       }).ToList();
 
             ViewBag.test = new SelectList(ent, "Body", "FirstName");
 
             return View(reportList);
         }
 
+        [HttpGet]
+        public ActionResult MyProfile()
+        {
+            User first = db.Users.Find(int.Parse(Session["UserID"].ToString()));
+            Manager c = db.Managers.Where(x => x.EMail == first.EMail).FirstOrDefault();
+            return View(c);
+        }
+
+        [HttpPost]
+        public ActionResult MyProfile(Manager c)
+        {
+            {
+                var toBeUpdated = db.Managers.Find(c.ID);
+                toBeUpdated.Address = c.Address;
+                toBeUpdated.Password = c.Password;
+                toBeUpdated.Phone = c.Phone;
+                toBeUpdated.City = c.City;
+                db.Entry(toBeUpdated).CurrentValues.SetValues(toBeUpdated);
+                db.SaveChanges();
+
+                using (FitnessCenterEntities ff = new FitnessCenterEntities())
+                {
+
+                    User first = ff.Users.Find(int.Parse(Session["UserID"].ToString()));
+                    first.Password = c.Password;
+                    ff.Entry(first).CurrentValues.SetValues(first);
+                    ff.SaveChanges();
+
+                }
+                return RedirectToAction("MyProfile", "Customer");
+            }
+
+
+        }
     }
 }

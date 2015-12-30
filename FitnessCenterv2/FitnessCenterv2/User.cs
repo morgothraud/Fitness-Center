@@ -19,14 +19,19 @@ namespace FitnessCenterv2
         {
             this.PassResets = new HashSet<PassReset>();
             this.PassResets1 = new HashSet<PassReset>();
+            this.Reports = new HashSet<Report>();
         }
 
         public int UserID { get; set; }
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-        [Required]
+        public string LastName
+        {
+            get;
+            set;
+        }
+        [Required, EmailAddress]
         public string EMail { get; set; }
         [Required, DataType(DataType.Password)]
         public string Password { get; set; }
@@ -34,5 +39,6 @@ namespace FitnessCenterv2
 
         public virtual ICollection<PassReset> PassResets { get; set; }
         public virtual ICollection<PassReset> PassResets1 { get; set; }
+        public virtual ICollection<Report> Reports { get; set; }
     }
 }

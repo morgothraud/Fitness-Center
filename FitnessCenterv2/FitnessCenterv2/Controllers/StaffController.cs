@@ -42,19 +42,33 @@ namespace FitnessCenterv2.Controllers
         {
             if (ModelState.IsValid)
             {
+
+
+                if (db.Users.Where(x => x.EMail == t.EMail).FirstOrDefault() == null) { 
+
+                t.RegistrationDate = DateTime.Now;
                 db.Customers.Add(t);
                 db.SaveChanges();
 
+                using (FitnessCenterEntities ff = new FitnessCenterEntities()) { 
                 User u = new User();
                 u.EMail = t.EMail;
                 u.FirstName = t.FirstName;
                 u.LastName = t.LastName;
                 u.Password = t.Password;
-                u.Role = "Staff";
-                db.Users.Add(u);
-                db.SaveChanges();
+                u.Role = "Customer";
+                ff.Users.Add(u);
+                ff.SaveChanges();
                 TempData["Success"] = u.FirstName + " " + u.LastName + " added successfully.";
+                }
+                
                 return RedirectToAction("ManageCustomer", "Staff");
+                }
+                else
+                {
+                    TempData["Error"] = t.EMail + " is already registered to the system." ;
+                    return RedirectToAction("ManageCustomer", "Staff");
+                }
             }
             return View();
         }
@@ -62,7 +76,7 @@ namespace FitnessCenterv2.Controllers
         /// This method opens a page that Staff can edit ,add  or delete customers.
         /// </summary>
         /// <returns></returns>
- 
+
         [HttpGet]
         public ActionResult ManageCustomer()
         {
@@ -72,7 +86,7 @@ namespace FitnessCenterv2.Controllers
         /// <summary>
         /// This method opens a page that Staff can edit customer information.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id"></para>
         /// <returns></returns>
         [HttpGet]
         public ActionResult EditCustomer(int id)
@@ -85,19 +99,20 @@ namespace FitnessCenterv2.Controllers
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
- 
+
         [HttpPost]
         public ActionResult EditCustomer(Customer c)
         {
             if (ModelState.IsValid)
             {
-                var toBeUpdated = db.Customers.Find(c.ID); ;
+                var toBeUpdated = db.Customers.Find(c.ID);
+                c.RegistrationDate = toBeUpdated.RegistrationDate;
                 db.Entry(toBeUpdated).CurrentValues.SetValues(c);
                 db.SaveChanges();
                 TempData["Success"] = c.FirstName + " " + c.LastName + " edited successfully.";
                 return RedirectToAction("ManageCustomer", "Staff");
             }
-            return View(c);
+            return View();
         }
 
         /// <summary>
@@ -119,23 +134,20 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult DeleteCustomer(Customer s)
         {
-            if (ModelState.IsValid)
+            using (FitnessCenterEntities fe = new FitnessCenterEntities())
             {
-                using (FitnessCenterEntities fe = new FitnessCenterEntities())
-                {
-                    s.EMail = fe.Staffs.Where(x => x.ID == s.ID).FirstOrDefault().EMail;
-                    User u = fe.Users.AsNoTracking().Single(x => x.EMail == s.EMail);
-                    fe.Users.Attach(u);
-                    fe.Users.Remove(u);
-                }
-
-                db.Customers.Attach(s);
-                db.Customers.Remove(s);
-                db.SaveChanges();
-                TempData["Success"] = s.FirstName + " " + s.LastName + " deleted successfully.";
-                return RedirectToAction("ManageCustomer", "Staff");
+                s = db.Customers.Find(s.ID);
+                User u = fe.Users.Where(x => x.EMail == s.EMail).FirstOrDefault();
+                fe.Users.Attach(u);
+                fe.Users.Remove(u);
             }
-            return View();
+
+            db.Customers.Attach(s);
+            db.Customers.Remove(s);
+            db.SaveChanges();
+            TempData["Success"] = s.FirstName + " " + s.LastName + " deleted successfully.";
+            return RedirectToAction("ManageCustomer", "Staff");
+
         }
 
         /// <summary>
@@ -151,7 +163,7 @@ namespace FitnessCenterv2.Controllers
         /// This method opens a page that Staff can fill a form about Trainers schedule.
         /// </summary>
         /// <returns></returns>
- 
+
         [HttpGet]
         public ActionResult AddTrainerSchedule()
         {
@@ -168,17 +180,40 @@ namespace FitnessCenterv2.Controllers
         /// <param name="selectedIDforType"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddTrainerSchedule(TrainerSchedule t, String selectedID,String selectedIDforType)
+        public ActionResult AddTrainerSchedule(TrainerSchedule t, String selectedID, String selectedIDforType)
         {
-
             if (ModelState.IsValid)
             {
                 t.TrainerID = Convert.ToInt32(selectedID);
                 t.Type = Convert.ToInt32(selectedIDforType);
-                db.TrainerSchedules.Add(t);
-                db.SaveChanges();
-                TempData["Success"] = "Schedule added successfully.";
-                return RedirectToAction("SetTrainerSchedule", "Staff");
+
+                TrainerSchedule search = db.TrainerSchedules.Where(
+                    x => x.StartTime.Value.Hour >= t.StartTime.Value.Hour
+                    && x.EndTime.Value.Hour <= t.EndTime.Value.Hour
+                    && x.StartTime.Value.Minute >= t.StartTime.Value.Minute
+                    && x.EndTime.Value.Minute <= t.EndTime.Value.Minute
+                    && x.StartTime.Value.Day == t.StartTime.Value.Day
+                    && x.StartTime.Value.Month == t.StartTime.Value.Month
+                    && x.StartTime.Value.Year == t.StartTime.Value.Year
+                    ).FirstOrDefault();
+
+                if (search != null)
+                {
+                    TempData["Error"] = "A conflict has occurred.";
+                    return RedirectToAction("SetTrainerSchedule", "Staff");
+                }
+                else if (t.EndTime == t.StartTime)
+                {
+                    TempData["Error"] = "Start time and end time cannot be at the same time.";
+                    return RedirectToAction("SetTrainerSchedule", "Staff");
+                }
+                else
+                {
+                    db.TrainerSchedules.Add(t);
+                    db.SaveChanges();
+                    TempData["Success"] = "Schedule added successfully.";
+                    return RedirectToAction("SetTrainerSchedule", "Staff");
+                }
             }
             return View();
         }
@@ -191,8 +226,8 @@ namespace FitnessCenterv2.Controllers
         [HttpGet]
         public ActionResult EditSchedule(int id)
         {
-            ViewBag.Types = new SelectList(db.TypeTables, "ID", "Type",id);
-            ViewBag.Trainers = new SelectList(db.Trainers, "ID", "FirstName",id);
+            ViewBag.Types = new SelectList(db.TypeTables, "ID", "Type", id);
+            ViewBag.Trainers = new SelectList(db.Trainers, "ID", "FirstName", id);
             TrainerSchedule c = db.TrainerSchedules.Where(x => x.ID == id).FirstOrDefault();
             return View(c);
         }
@@ -203,17 +238,39 @@ namespace FitnessCenterv2.Controllers
         /// <param name="selectedIDforType"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult EditSchedule(TrainerSchedule t, String selectedID,String selectedIDforType)
+        public ActionResult EditSchedule(TrainerSchedule t, String selectedID, String selectedIDforType)
         {
             if (ModelState.IsValid)
             {
+
+                TrainerSchedule search = db.TrainerSchedules.Where(
+              x => x.StartTime.Value.Hour >= t.StartTime.Value.Hour
+              && x.EndTime.Value.Hour <= t.EndTime.Value.Hour
+              && x.StartTime.Value.Minute >= t.StartTime.Value.Minute
+              && x.EndTime.Value.Minute <= t.EndTime.Value.Minute
+              && x.StartTime.Value.Day == t.StartTime.Value.Day
+              && x.StartTime.Value.Month == t.StartTime.Value.Month
+              && x.StartTime.Value.Year == t.StartTime.Value.Year
+              ).FirstOrDefault();
+
+                if (search != null)
+                {
+                    TempData["Error"] = "A conflict has occurred.";
+                    return RedirectToAction("SetTrainerSchedule", "Staff");
+                }
+                else if (t.EndTime == t.StartTime)
+                {
+                    TempData["Error"] = "Start time and end time cannot be at the same time.";
+                    return RedirectToAction("SetTrainerSchedule", "Staff");
+                }
                 TypeTable type = db.TypeTables.Find(Convert.ToInt32(selectedIDforType));
                 t.TrainerID = Convert.ToInt32(selectedID);
                 TrainerSchedule ts = new TrainerSchedule();
                 ts.ID = t.ID;
                 ts.TrainerID = Convert.ToInt32(selectedID);
                 ts.Type = type.ID;
-                ts.Time = t.Time;
+                ts.StartTime = t.StartTime;
+                ts.EndTime = t.EndTime;
                 var toBeUpdated = db.TrainerSchedules.Where(x => x.ID == t.ID).FirstOrDefault();
                 db.Entry(toBeUpdated).CurrentValues.SetValues(ts);
                 db.SaveChanges();
@@ -248,7 +305,7 @@ namespace FitnessCenterv2.Controllers
                 db.TrainerSchedules.Remove(s);
                 db.SaveChanges();
                 TempData["Success"] = "Schedule deleted successfully.";
-                return RedirectToAction("ManageCustomer", "Staff");
+                return RedirectToAction("SetTrainerSchedule", "Staff");
             }
             return View();
         }
@@ -281,7 +338,7 @@ namespace FitnessCenterv2.Controllers
                 User first = db.Users.Where(x => x.UserID == id).FirstOrDefault();
                 Staff f = db.Staffs.Where(x => x.EMail == first.EMail).FirstOrDefault();
 
-                r.SenderID = f.ID;
+                r.SenderID = first.UserID;
                 r.ReceiverID = Convert.ToInt32(selectedID);
 
                 db.Reports.Add(r);
@@ -298,8 +355,9 @@ namespace FitnessCenterv2.Controllers
                 mailer.Body = r.Body;
                 mailer.IsHtml = true;
                 mailer.Send();
-                ViewBag.Messsage = "Your report has been sent.";
-                return RedirectToAction("ManageCustomer", "Staff");
+                TempData["Success"] = "Your report has been sent.";
+                return RedirectToAction("Index", "Staff");
+
             }
             return View();
         }
@@ -312,6 +370,42 @@ namespace FitnessCenterv2.Controllers
         {
             return View(db.GuestLists.ToList());
         }
- 
+
+
+        [HttpGet]
+        public ActionResult MyProfile()
+        {
+            User first = db.Users.Find(int.Parse(Session["UserID"].ToString()));
+            Staff c = db.Staffs.Where(x => x.EMail == first.EMail).FirstOrDefault();
+            return View(c);
+        }
+
+        [HttpPost]
+        public ActionResult MyProfile(Staff c)
+        {
+            {
+                var toBeUpdated = db.Staffs.Find(c.ID);
+                toBeUpdated.Address = c.Address;
+                toBeUpdated.Password = c.Password;
+                toBeUpdated.Phone = c.Phone;
+                db.Entry(toBeUpdated).CurrentValues.SetValues(toBeUpdated);
+                db.SaveChanges();
+
+                using (FitnessCenterEntities ff = new FitnessCenterEntities())
+                {
+
+                    User first = ff.Users.Find(int.Parse(Session["UserID"].ToString()));
+                    first.Password = c.Password;
+                    ff.Entry(first).CurrentValues.SetValues(first);
+                    ff.SaveChanges();
+
+                }
+
+
+
+                return RedirectToAction("MyProfile", "Staff");
+            }
+        }
+
     }
 }

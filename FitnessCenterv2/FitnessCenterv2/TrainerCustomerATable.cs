@@ -16,7 +16,7 @@ namespace FitnessCenterv2
     {
         public Nullable<int> TrainerID { get; set; }
         public Nullable<int> CustomerID { get; set; }
-        public string ID { get; set; }
+        public int ID { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual Trainer Trainer { get; set; }

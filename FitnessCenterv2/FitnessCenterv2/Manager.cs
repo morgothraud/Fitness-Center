@@ -12,24 +12,25 @@ namespace FitnessCenterv2
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Manager
     {
         public int ID { get; set; }
         [Required, Display(Name = "First Name")]
         public string FirstName { get; set; }
-            [Required, Display(Name = "Last Name")]
+        [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
-                [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> BirthDate { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Phone { get; set; }
-        [Required]
+        [Required, EmailAddress]
         public string EMail { get; set; }
         public Nullable<bool> Gender { get; set; }
+        [Display(Name = "Unit Price"), Range(0, double.MaxValue), DataType(DataType.Currency)]
         public Nullable<decimal> Salary { get; set; }
-        [Required]
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
     }
 }

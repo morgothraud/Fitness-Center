@@ -6,6 +6,11 @@
 
 <h2>Login</h2>
 
+@if (TempData["PaymentSuccess"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["PaymentSuccess"]</p>
+}
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()

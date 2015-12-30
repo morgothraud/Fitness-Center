@@ -12,15 +12,16 @@ namespace FitnessCenterv2
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Equipment
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        [Range(0, double.MaxValue)]
         public Nullable<int> Quantity { get; set; }
         [Required, Display(Name = "Is Avaliable")]
         public Nullable<bool> IsAvaliable { get; set; }
-        [Required, Display(Name = "Unit Price")]
+        [Required, Display(Name = "Unit Price"), Range(0, double.MaxValue),DataType(DataType.Currency)]
         public Nullable<int> UnitPrice { get; set; }
     }
 }

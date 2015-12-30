@@ -9,7 +9,7 @@
 <link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
 
-<h2>AddCustomer</h2>
+<h2>Add Customer</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -110,11 +110,14 @@
 
         $('#BirthDate').datepicker({
             dateFormat: "dd/mm/yy",
+            changeYear: true,
+            yearRange: "-100:+0",
 
         });
     });
 
 </script>
+
 
 <div>
     @Html.ActionLink("Back to List", "ManageCustomer","Staff")

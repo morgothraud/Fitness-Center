@@ -1,0 +1,127 @@
+﻿@model FitnessCenterv2.Customer
+
+
+<h2>Extend Your Membership</h2>
+@if (TempData["Error"] != null)
+{
+    <p class="alert alert-danger" id="errorMessage">@TempData["Error"]</p>
+}
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="errorMessage">@TempData["Success"]</p>
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastName)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.RegistrationDate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RegistrationDate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CreditCardNumber)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.CreditCardNumber)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EndDateMemberShip)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EndDateMemberShip)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.MemberShipDays)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MemberShipDays)
+            </dd>
+
+            <dt>
+                Total Payment : 
+            </dt>
+
+            <dd>
+                <label class="changeme">120$</label>
+            </dd>
+
+        </dl>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberShipDays, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "30", htmlAttributes: new { id = "120$" , @checked=true})
+                    @Html.Label("30", "30 Days")    
+
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "120", new { id = "480$" })
+                    @Html.Label("120", "120 Days")
+
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "360", new { id = "600$" })
+                    @Html.Label("360", "360 Days")
+                    @Html.ValidationMessageFor(model => model.MemberShipDays, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+
+    @Html.ActionLink("Back", "Index", "Customer") |
+    @Html.ActionLink("Change your credit card number", "ChangeCardNumber", new { id = Model.ID })
+</div>
+
+
+ 
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+     $('input[type=radio]').change(function(evt) {
+    $('.changeme').html($(this).val()*2.5+"$");
+});
+    });
+</script>
