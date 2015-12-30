@@ -7,7 +7,7 @@
 <link href="~/Content/jquery-ui.css" rel="stylesheet" />
 <link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
-<h2>EditCustomer</h2>
+<h2>Edit Customer</h2>
 
 @using (Html.BeginForm())
 {
@@ -40,19 +40,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.BirthDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BirthDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.BirthDate,new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.BirthDate, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreditCardNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreditCardNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreditCardNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+ 
         <div class="form-group">
             @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -91,7 +83,13 @@
             </div>
         </div>
 
-     
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -106,6 +104,8 @@
 
         $('#BirthDate').datepicker({
             dateFormat: "dd/mm/yy",
+            changeYear: true,
+            yearRange: "-100:+0",
 
         });
     });

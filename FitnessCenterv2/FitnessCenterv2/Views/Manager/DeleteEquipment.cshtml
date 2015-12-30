@@ -28,11 +28,17 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.IsAvaliable)
+            Status
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.IsAvaliable)
+            @if (Model.IsAvaliable!= null &&Model.IsAvaliable == true)
+            {
+                <p>Avaliable</p>
+            }
+            @if (Model.IsAvaliable != null && Model.IsAvaliable == false)
+            {
+                <p>Not Avaliable</p>
+            }
         </dd>
 
         <dt>
@@ -50,7 +56,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Manage Equipment","Manager")
+            @Html.ActionLink("Back to List", "ManageEquipment","Manager")
         </div>
     }
 </div>

@@ -9,6 +9,10 @@
 <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
 <h2>Edit Staff Info</h2>
 
+@if (TempData["Error"] != null)
+{
+    <p class="alert alert-danger" id="successMessage">@TempData["Error"]</p>
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -88,14 +92,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.HireDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.HireDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.HireDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
+ 
 
         <div class="form-group">
             @Html.LabelFor(model => model.Salary, htmlAttributes: new { @class = "control-label col-md-2" })

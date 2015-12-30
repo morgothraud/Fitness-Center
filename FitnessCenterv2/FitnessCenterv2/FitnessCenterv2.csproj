@@ -153,6 +153,7 @@
     <Compile Include="Manager.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CustomDateRangeAttribute.cs" />
     <Compile Include="Models\CustomRoleProvider.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -160,6 +161,8 @@
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\DateFormatValidation.cs" />
     <Compile Include="Models\GMailer.cs" />
+    <Compile Include="Models\Metadata.cs" />
+    <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="PassReset.cs">
       <DependentUpon>FitnessCenterModel.tt</DependentUpon>
     </Compile>
@@ -195,6 +198,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\check_radio_sheet.png" />
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="favicon.ico" />
@@ -285,17 +289,26 @@
     <Content Include="Views\Staff\DeleteCustomer.cshtml" />
     <Content Include="Views\Customer\Index.cshtml" />
     <Content Include="Views\Customer\SelectProgram.cshtml" />
-    <Content Include="Views\Customer\BringGuest.cshtml" />
     <Content Include="Views\Customer\ScheduleDetails.cshtml" />
     <Content Include="Views\Trainer\Index.cshtml" />
     <Content Include="Views\Trainer\getCustomers.cshtml" />
     <Content Include="Views\Staff\GenerateReport.cshtml" />
-    <Content Include="Views\Staff\GuestList.cshtml" />
     <Content Include="Views\Manager\ReportList.cshtml" />
     <Content Include="Views\Trainer\ManagePrograms.cshtml" />
     <Content Include="Views\Trainer\AddWorkoutSchedule.cshtml" />
     <Content Include="Views\Trainer\EditWorkoutSchedule.cshtml" />
     <Content Include="Views\Trainer\DeleteWorkoutSchedule.cshtml" />
+    <Content Include="Views\Customer\BringGuest.cshtml" />
+    <Content Include="Views\Staff\GuestList.cshtml" />
+    <Content Include="Views\Customer\refreshMemberShip.cshtml" />
+    <Content Include="Views\Customer\ChangeCardNumber.cshtml" />
+    <Content Include="Views\Trainer\MySchedule.cshtml" />
+    <Content Include="Views\Customer\MyProfile.cshtml" />
+    <Content Include="Views\Manager\MyProfile.cshtml" />
+    <Content Include="Views\Staff\MyProfile.cshtml" />
+    <Content Include="Views\Trainer\MyProfile.cshtml" />
+    <Content Include="Views\Customer\TrainerList.cshtml" />
+    <Content Include="Views\Customer\TrainerDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

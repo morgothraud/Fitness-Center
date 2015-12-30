@@ -12,18 +12,18 @@ namespace FitnessCenterv2
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Report
     {
-        [Display(Name="Sender")]
+        [Display(Name = "Sender")]
         public int SenderID { get; set; }
         public int ReceiverID { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        [Display(Name="Send Date")]
+        [Display(Name = "Send Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> SendDate { get; set; }
         public int ID { get; set; }
-    
-        public virtual Staff Staff { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

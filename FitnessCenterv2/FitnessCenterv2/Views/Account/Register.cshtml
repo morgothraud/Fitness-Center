@@ -22,6 +22,11 @@
  {
     <p class="alert alert-success" id="successMessage">@TempData["Success"] You may @Html.ActionLink(" login", "Login").</p>
  }
+ 
+        @if (TempData["Error"] != null)
+        {
+            <p class="alert alert-danger" id="errorMessage">@TempData["Error"]</p>
+        }
         <div class="form-group">
             @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -93,6 +98,26 @@
             </div>
         </div>
 
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberShipDays, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "30", new { id = "30" })
+                    @Html.Label("30", "30 Days")
+
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "120", new { id = "120" })
+                    @Html.Label("120", "120 Days")
+
+                    @Html.RadioButtonFor(model => model.MemberShipDays, "360", new { id = "360" })
+                    @Html.Label("360", "360 Days")
+                    @Html.ValidationMessageFor(model => model.MemberShipDays, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -115,6 +140,8 @@
 
         $('#BirthDate').datepicker({
             dateFormat: "dd/mm/yy",
+            changeYear: true,
+            yearRange: "-100:+0", 
 
         });
     });

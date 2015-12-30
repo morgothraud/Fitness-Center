@@ -9,6 +9,11 @@
 <script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
 <h2>Add New Staff</h2>
 
+@if (TempData["Error"] != null)
+{
+    <p class="alert alert-danger" id="successMessage">@TempData["Error"]</p>
+}
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()

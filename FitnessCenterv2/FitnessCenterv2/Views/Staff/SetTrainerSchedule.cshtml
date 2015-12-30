@@ -9,6 +9,11 @@
 {
     <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
 }
+
+@if (TempData["Error"] != null)
+{
+    <p class="alert alert-danger" id="successMessage">@TempData["Error"]</p>
+}
 <p>
     @Html.ActionLink("Create New", "AddTrainerSchedule")
 </p>
@@ -18,11 +23,16 @@
             @Html.DisplayNameFor(model => model.Type)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Time)
+            @Html.DisplayNameFor(model => model.StartTime)
+        </th>
+     
+        <th>
+            @Html.DisplayNameFor(model => model.EndTime)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Trainer.FirstName)
         </th>
+
         <th></th>
     </tr>
 
@@ -32,10 +42,15 @@
             @Html.DisplayFor(modelItem => item.TypeTable.Type)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Time)
+ 
+            @Html.DisplayFor(modelItem => item.StartTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EndTime)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Trainer.FirstName)
+            @Html.DisplayFor(modelItem => item.Trainer.LastName)
         </td>
         <td>
             @Html.ActionLink("Edit", "EditSchedule", new { ID = item.ID, TrainerID = item.TrainerID }) |

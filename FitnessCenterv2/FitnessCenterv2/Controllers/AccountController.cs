@@ -18,7 +18,8 @@ namespace FitnessCenterv2.Controllers
         public ActionResult Index()
         {
 
-            return View(db.Trainers.ToList());
+            return RedirectToAction("Index","Home");
+
         }
 
         /// <summary>
@@ -42,7 +43,9 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult Register(User c, Customer cu)
         {
-            if (ModelState.IsValid)
+            if (Session["UserID"] != null) return RedirectToAction("Index");
+            User search = db.Users.Where(x => x.EMail == c.EMail).FirstOrDefault();
+            if (ModelState.IsValid && search == null)
             {
 
                 c.Role = "Customer";
@@ -55,13 +58,25 @@ namespace FitnessCenterv2.Controllers
                 cust.FirstName = c.FirstName;
                 cust.LastName = c.LastName;
                 cust.Gender = cu.Gender;
+                cust.Address = cu.Address;
+                cust.Phone = cu.Phone;
+                cust.CreditCardNumber = cu.CreditCardNumber;
+                cust.BirthDate = cu.BirthDate;
                 cust.RegistrationDate = DateTime.Now;
+                DateTime dt = new DateTime();
+                dt = DateTime.Now;
+                if(cust.CreditCardNumber != null)
+                dt = dt.AddDays(Convert.ToDouble(cu.MemberShipDays));
+                cust.EndDateMemberShip = dt;
+                cust.MemberShipDays = cu.MemberShipDays;
                 db.Customers.Add(cust);
                 db.SaveChanges();
 
                 ModelState.Clear();
                 TempData["Success"] = cust.EMail + " is registered successfully.";
             }
+            else if (search!=null)
+            TempData["Error"] = c.EMail + " is already registered to the system.";
             return View();
         }
         /// <summary>
@@ -70,7 +85,7 @@ namespace FitnessCenterv2.Controllers
         /// <returns></returns>
         public ActionResult Login()
         {
-
+            if (Session["UserID"] != null) return RedirectToAction("Index");
             return View();
         }
         /// <summary>
@@ -81,6 +96,7 @@ namespace FitnessCenterv2.Controllers
         [HttpPost]
         public ActionResult Login(User c)
         {
+ 
             var user = db.Users.Where(x => x.EMail == c.EMail && x.Password == c.Password).FirstOrDefault();
 
             if (user == null)
@@ -92,6 +108,7 @@ namespace FitnessCenterv2.Controllers
             {
                 FormsAuthentication.SetAuthCookie(c.EMail, false);
                 Session["UserID"] = user.UserID.ToString();
+                Session["UserName"] = user.FirstName + " "+  user.LastName;
                 Session["Role"] = user.Role.ToString();
                 if (user.Role == "Manager")
                 {
@@ -101,8 +118,18 @@ namespace FitnessCenterv2.Controllers
                 {
                     return RedirectToAction("Index", "Staff");
                 }
-                if (user.Role == "Customer")
+                if (user.Role == "Customer" || user.Role == "Expired")
                 {
+                    Customer cust = db.Customers.Where(x=>x.EMail == user.EMail).FirstOrDefault();
+                    if (cust!=null && Convert.ToDateTime(cust.EndDateMemberShip) < DateTime.Now)
+                    {
+                        TempData["Error"] = "Your membership expired at " + cust.EndDateMemberShip + " You must extend your membership below to continue.";
+                        User u2 = user;
+                        u2.Role = "Expired";
+                        db.Entry(user).CurrentValues.SetValues(u2);
+                        db.SaveChanges();
+                        return RedirectToAction("refreshMemberShip", "Customer");
+                    }
                     return RedirectToAction("Index", "Customer");
                 }
                 if (user.Role == "Trainer")
@@ -140,6 +167,7 @@ namespace FitnessCenterv2.Controllers
         [HttpGet]
         public ActionResult ForgotPassword(String s)
         {
+            if (Session["UserID"] != null) return RedirectToAction("Index");
             return View(s);
         }
 
@@ -218,7 +246,6 @@ namespace FitnessCenterv2.Controllers
         [HttpGet]
         public ActionResult ChangePassword(String authID)
         {
-
             return View(authID);
         }
 
@@ -260,5 +287,7 @@ namespace FitnessCenterv2.Controllers
             else ViewBag.Message = "Authentication code is already used.";
             return View();
         }
+    
+
     }
 }

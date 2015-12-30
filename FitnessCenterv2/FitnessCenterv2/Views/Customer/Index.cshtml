@@ -1,10 +1,25 @@
-﻿
-
-@{
+﻿@{
     ViewBag.Title = "Index2";
 }
 
-<h2>Index</h2>
+
+<h3>@ViewBag.RemaningTime days left 'till your membership ends.</h3>
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+
+@if (TempData["Info"] != null)
+{
+    <p class="alert alert-info" id="infoMessage">@TempData["Info"]</p>
+}
+
+
+
 @Html.ActionLink("Bring Guest", "BringGuest", "Customer")<br />
-@Html.ActionLink("Select a Program", "SelectProgram", "Customer")
+@Html.ActionLink("Select a Program", "SelectProgram", "Customer")<br />
+@Html.ActionLink("Change Your Trainer", "TrainerList", "Customer")<br />    
+@Html.ActionLink("Refresh MemberShip", "refreshMemberShip", "Customer")
+
 

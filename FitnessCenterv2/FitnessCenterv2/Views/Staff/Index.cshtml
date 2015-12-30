@@ -1,10 +1,16 @@
 ﻿@model IEnumerable<FitnessCenterv2.Customer>
 
 @{
-    ViewBag.Title = "Index2";
+    ViewBag.Title = "Control Panel";
 }
 
 <h2>Index</h2>
+
+@if (TempData["Success"] != null)
+{
+    <p class="alert alert-success" id="successMessage">@TempData["Success"]</p>
+}
+
 @Html.ActionLink("Manage Customer", "ManageCustomer", "Staff")<br />
 @Html.ActionLink("Set Training Schedule", "SetTrainerSchedule", "Staff")<br />
 @Html.ActionLink("Generate Report", "GenerateReport", "Staff")<br />

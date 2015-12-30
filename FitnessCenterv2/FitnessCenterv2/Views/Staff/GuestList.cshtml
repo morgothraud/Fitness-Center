@@ -1,18 +1,21 @@
 ﻿@model IEnumerable<FitnessCenterv2.GuestList>
-<h2>Guest List</h2>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+ 
+<h2> Guest List </h2>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.CustomerID)
+            @Html.DisplayNameFor(model => model.GuestFirstName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.GuestName)
+            @Html.DisplayNameFor(model => model.GuestLastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.GuestPhone)
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.FirstName)
         </th>
         <th></th>
     </tr>
@@ -20,13 +23,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.CustomerID)
+            @Html.DisplayFor(modelItem => item.GuestFirstName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.GuestName)
+            @Html.DisplayFor(modelItem => item.GuestLastName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.GuestPhone)
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FirstName)
         </td>
         <td>
         </td>

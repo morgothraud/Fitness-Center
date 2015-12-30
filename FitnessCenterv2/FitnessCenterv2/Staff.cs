@@ -12,32 +12,28 @@ namespace FitnessCenterv2
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    
+
     public partial class Staff
     {
-        public Staff()
-        {
-            this.Reports = new HashSet<Report>();
-        }
-    
         public int ID { get; set; }
-        [Display(Name="First Name")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public string Title { get; set; }
-               [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public Nullable<System.DateTime> BirthDate { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
-        [Required]
+        [Required, EmailAddress]
         public string EMail { get; set; }
-        public Nullable<bool> Gender { get; set; }
-        public Nullable<System.DateTime> HireDate { get; set; }
-        public Nullable<decimal> Salary { get; set; }
         [Required]
+        public Nullable<bool> Gender { get; set; }
+        [Display(Name = "Hire Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> HireDate { get; set; }
+        [Required, Display(Name = "Salary"), Range(0, double.MaxValue), DataType(DataType.Currency)]
+        public Nullable<decimal> Salary { get; set; }
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
-    
-        public virtual ICollection<Report> Reports { get; set; }
     }
 }

@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.Quantity)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsAvaliable)
+            Status
         </th>
         <th>
             @Html.DisplayNameFor(model => model.UnitPrice)
@@ -39,7 +39,15 @@
             @Html.DisplayFor(modelItem => item.Quantity)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.IsAvaliable)
+            @if (item.IsAvaliable == true)
+            {
+                <p>Avaliable</p>
+            }
+            @if (item.IsAvaliable == false)
+            {
+                <p>Not Avaliable</p>
+            }
+          
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.UnitPrice)

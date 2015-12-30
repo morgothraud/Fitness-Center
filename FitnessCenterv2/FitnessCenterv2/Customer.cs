@@ -17,6 +17,7 @@ namespace FitnessCenterv2
     {
         public Customer()
         {
+            this.GuestLists = new HashSet<GuestList>();
             this.TrainerCustomerATables = new HashSet<TrainerCustomerATable>();
         }
 
@@ -25,21 +26,27 @@ namespace FitnessCenterv2
         public string FirstName { get; set; }
         [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
-
         public Nullable<System.DateTime> RegistrationDate { get; set; }
-        [Display(Name = "Credit Card Number")]
+        [Display(Name = "Credit Card Number"), CreditCard]
         public string CreditCardNumber { get; set; }
         public string Address { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Invalid Phone Number")]
         public string Phone { get; set; }
-        [Required]
+        [Required, EmailAddress]
         public string EMail { get; set; }
-        public Nullable<bool> Gender { get; set; }
         [Required]
+        public Nullable<bool> Gender { get; set; }
+        [Required, DataType(DataType.Password)]
         public string Password { get; set; }
-        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
+        [Display(Name = "Birth Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> BirthDate { get; set; }
         public Nullable<int> WorkoutID { get; set; }
+        [Display(Name = "MemberShip End"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
+        public Nullable<System.DateTime> EndDateMemberShip { get; set; }
+        [Display(Name="Membership Days")]
+        public Nullable<int> MemberShipDays { get; set; }
 
+        public virtual ICollection<GuestList> GuestLists { get; set; }
         public virtual ICollection<TrainerCustomerATable> TrainerCustomerATables { get; set; }
     }
 }

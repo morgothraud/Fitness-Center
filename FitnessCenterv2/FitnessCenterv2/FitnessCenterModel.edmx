@@ -21,6 +21,8 @@
           <Property Name="Password" Type="nvarchar" MaxLength="50" />
           <Property Name="BirthDate" Type="date" />
           <Property Name="WorkoutID" Type="int" />
+          <Property Name="EndDateMemberShip" Type="datetime" />
+          <Property Name="MemberShipDays" Type="int" />
         </EntityType>
         <EntityType Name="Equipment">
           <Key>
@@ -38,8 +40,9 @@
           </Key>
           <Property Name="GuestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" />
-          <Property Name="GuestName" Type="varchar" MaxLength="50" />
-          <Property Name="GuestPhone" Type="varchar" MaxLength="50" />
+          <Property Name="GuestFirstName" Type="varchar" MaxLength="50" />
+          <Property Name="GuestLastName" Type="varchar" MaxLength="50" />
+          <Property Name="Date" Type="datetime" />
         </EntityType>
         <EntityType Name="Manager">
           <Key>
@@ -128,7 +131,7 @@
           </Key>
           <Property Name="TrainerID" Type="int" />
           <Property Name="CustomerID" Type="int" />
-          <Property Name="ID" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="TrainerSchedule">
           <Key>
@@ -136,14 +139,15 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TrainerID" Type="int" Nullable="false" />
-          <Property Name="Time" Type="smalldatetime" />
           <Property Name="Type" Type="int" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
         </EntityType>
         <EntityType Name="TypeTable">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="User">
@@ -161,10 +165,22 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Schedule" Type="nvarchar" MaxLength="50" />
           <Property Name="TrainerID" Type="int" />
         </EntityType>
+        <Association Name="FK_GuestList_Customer1">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="GuestList" Type="Self.GuestList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GuestList">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PassReset_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="PassReset" Type="Self.PassReset" Multiplicity="*" />
@@ -189,12 +205,12 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Report_Staff">
-          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+        <Association Name="FK_Report_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Report" Type="Self.Report" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="ID" />
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Report">
               <PropertyRef Name="SenderID" />
@@ -226,6 +242,18 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_TrainerSchedule_Trainer">
+          <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
+          <End Role="TrainerSchedule" Type="Self.TrainerSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Trainer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TrainerSchedule">
+              <PropertyRef Name="TrainerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrainerSchedule_Trainer1">
           <End Role="Trainer" Type="Self.Trainer" Multiplicity="1" />
           <End Role="TrainerSchedule" Type="Self.TrainerSchedule" Multiplicity="*" />
           <ReferentialConstraint>
@@ -276,6 +304,10 @@
           <EntitySet Name="TypeTable" EntityType="Self.TypeTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WorkoutProgram" EntityType="Self.WorkoutProgram" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_GuestList_Customer1" Association="Self.FK_GuestList_Customer1">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="GuestList" EntitySet="GuestList" />
+          </AssociationSet>
           <AssociationSet Name="FK_PassReset_User" Association="Self.FK_PassReset_User">
             <End Role="User" EntitySet="User" />
             <End Role="PassReset" EntitySet="PassReset" />
@@ -284,8 +316,8 @@
             <End Role="User" EntitySet="User" />
             <End Role="PassReset" EntitySet="PassReset" />
           </AssociationSet>
-          <AssociationSet Name="FK_Report_Staff" Association="Self.FK_Report_Staff">
-            <End Role="Staff" EntitySet="Staff" />
+          <AssociationSet Name="FK_Report_User" Association="Self.FK_Report_User">
+            <End Role="User" EntitySet="User" />
             <End Role="Report" EntitySet="Report" />
           </AssociationSet>
           <AssociationSet Name="FK_TrainerCustomerATable_Customer" Association="Self.FK_TrainerCustomerATable_Customer">
@@ -297,6 +329,10 @@
             <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATable" />
           </AssociationSet>
           <AssociationSet Name="FK_TrainerSchedule_Trainer" Association="Self.FK_TrainerSchedule_Trainer">
+            <End Role="Trainer" EntitySet="Trainer" />
+            <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrainerSchedule_Trainer1" Association="Self.FK_TrainerSchedule_Trainer1">
             <End Role="Trainer" EntitySet="Trainer" />
             <End Role="TrainerSchedule" EntitySet="TrainerSchedule" />
           </AssociationSet>
@@ -328,6 +364,10 @@
           <EntitySet Name="TypeTables" EntityType="FitnessCenterModel.TypeTable" />
           <EntitySet Name="Users" EntityType="FitnessCenterModel.User" />
           <EntitySet Name="WorkoutPrograms" EntityType="FitnessCenterModel.WorkoutProgram" />
+          <AssociationSet Name="FK_GuestList_Customer1" Association="FitnessCenterModel.FK_GuestList_Customer1">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="GuestList" EntitySet="GuestLists" />
+          </AssociationSet>
           <AssociationSet Name="FK_TrainerCustomerATable_Customer" Association="FitnessCenterModel.FK_TrainerCustomerATable_Customer">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATables" />
@@ -340,10 +380,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="PassReset" EntitySet="PassResets" />
           </AssociationSet>
-          <AssociationSet Name="FK_Report_Staff" Association="FitnessCenterModel.FK_Report_Staff">
-            <End Role="Staff" EntitySet="Staffs" />
-            <End Role="Report" EntitySet="Reports" />
-          </AssociationSet>
           <AssociationSet Name="FK_TrainerCustomerATable_Trainer" Association="FitnessCenterModel.FK_TrainerCustomerATable_Trainer">
             <End Role="Trainer" EntitySet="Trainers" />
             <End Role="TrainerCustomerATable" EntitySet="TrainerCustomerATables" />
@@ -352,13 +388,17 @@
             <End Role="Trainer" EntitySet="Trainers" />
             <End Role="TrainerSchedule" EntitySet="TrainerSchedules" />
           </AssociationSet>
+          <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="FitnessCenterModel.FK_WorkoutProgram_Trainer">
+            <End Role="Trainer" EntitySet="Trainers" />
+            <End Role="WorkoutProgram" EntitySet="WorkoutPrograms" />
+          </AssociationSet>
           <AssociationSet Name="FK_TrainerSchedule_TypeTable" Association="FitnessCenterModel.FK_TrainerSchedule_TypeTable">
             <End Role="TypeTable" EntitySet="TypeTables" />
             <End Role="TrainerSchedule" EntitySet="TrainerSchedules" />
           </AssociationSet>
-          <AssociationSet Name="FK_WorkoutProgram_Trainer" Association="FitnessCenterModel.FK_WorkoutProgram_Trainer">
-            <End Role="Trainer" EntitySet="Trainers" />
-            <End Role="WorkoutProgram" EntitySet="WorkoutPrograms" />
+          <AssociationSet Name="FK_Report_User" Association="FitnessCenterModel.FK_Report_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Customer">
@@ -377,7 +417,10 @@
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BirthDate" Type="DateTime" Precision="0" />
           <Property Name="WorkoutID" Type="Int32" />
+          <NavigationProperty Name="GuestLists" Relationship="FitnessCenterModel.FK_GuestList_Customer1" FromRole="Customer" ToRole="GuestList" />
           <NavigationProperty Name="TrainerCustomerATables" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Customer" FromRole="Customer" ToRole="TrainerCustomerATable" />
+          <Property Name="EndDateMemberShip" Type="DateTime" Precision="3" />
+          <Property Name="MemberShipDays" Type="Int32" />
         </EntityType>
         <EntityType Name="Equipment">
           <Key>
@@ -395,8 +438,10 @@
           </Key>
           <Property Name="GuestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="GuestName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="GuestPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GuestFirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GuestLastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Customer" Relationship="FitnessCenterModel.FK_GuestList_Customer1" FromRole="GuestList" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Manager">
           <Key>
@@ -437,7 +482,7 @@
           <Property Name="Body" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="SendDate" Type="DateTime" Precision="3" />
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Staff" Relationship="FitnessCenterModel.FK_Report_Staff" FromRole="Report" ToRole="Staff" />
+          <NavigationProperty Name="User" Relationship="FitnessCenterModel.FK_Report_User" FromRole="Report" ToRole="User" />
         </EntityType>
         <EntityType Name="Staff">
           <Key>
@@ -455,7 +500,6 @@
           <Property Name="HireDate" Type="DateTime" Precision="0" />
           <Property Name="Salary" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_Staff" FromRole="Staff" ToRole="Report" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -492,7 +536,7 @@
           </Key>
           <Property Name="TrainerID" Type="Int32" />
           <Property Name="CustomerID" Type="Int32" />
-          <Property Name="ID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Customer" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Customer" FromRole="TrainerCustomerATable" ToRole="Customer" />
           <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_TrainerCustomerATable_Trainer" FromRole="TrainerCustomerATable" ToRole="Trainer" />
         </EntityType>
@@ -502,16 +546,17 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TrainerID" Type="Int32" Nullable="false" />
-          <Property Name="Time" Type="DateTime" Precision="0" />
           <Property Name="Type" Type="Int32" />
           <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_TrainerSchedule_Trainer" FromRole="TrainerSchedule" ToRole="Trainer" />
           <NavigationProperty Name="TypeTable" Relationship="FitnessCenterModel.FK_TrainerSchedule_TypeTable" FromRole="TrainerSchedule" ToRole="TypeTable" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="TypeTable">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="TrainerSchedules" Relationship="FitnessCenterModel.FK_TrainerSchedule_TypeTable" FromRole="TypeTable" ToRole="TrainerSchedule" />
         </EntityType>
@@ -527,6 +572,7 @@
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PassResets" Relationship="FitnessCenterModel.FK_PassReset_User" FromRole="User" ToRole="PassReset" />
           <NavigationProperty Name="PassResets1" Relationship="FitnessCenterModel.FK_PassReset_User1" FromRole="User" ToRole="PassReset" />
+          <NavigationProperty Name="Reports" Relationship="FitnessCenterModel.FK_Report_User" FromRole="User" ToRole="Report" />
         </EntityType>
         <EntityType Name="WorkoutProgram">
           <Key>
@@ -537,6 +583,18 @@
           <Property Name="TrainerID" Type="Int32" />
           <NavigationProperty Name="Trainer" Relationship="FitnessCenterModel.FK_WorkoutProgram_Trainer" FromRole="WorkoutProgram" ToRole="Trainer" />
         </EntityType>
+        <Association Name="FK_GuestList_Customer1">
+          <End Type="FitnessCenterModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.GuestList" Role="GuestList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GuestList">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TrainerCustomerATable_Customer">
           <End Type="FitnessCenterModel.Customer" Role="Customer" Multiplicity="0..1" />
           <End Type="FitnessCenterModel.TrainerCustomerATable" Role="TrainerCustomerATable" Multiplicity="*" />
@@ -573,18 +631,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Report_Staff">
-          <End Type="FitnessCenterModel.Staff" Role="Staff" Multiplicity="1" />
-          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Staff">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Report">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_TrainerCustomerATable_Trainer">
           <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="0..1" />
           <End Type="FitnessCenterModel.TrainerCustomerATable" Role="TrainerCustomerATable" Multiplicity="*" />
@@ -609,18 +655,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TrainerSchedule_TypeTable">
-          <End Type="FitnessCenterModel.TypeTable" Role="TypeTable" Multiplicity="0..1" />
-          <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TypeTable">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="TrainerSchedule">
-              <PropertyRef Name="Type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_WorkoutProgram_Trainer">
           <End Type="FitnessCenterModel.Trainer" Role="Trainer" Multiplicity="0..1" />
           <End Type="FitnessCenterModel.WorkoutProgram" Role="WorkoutProgram" Multiplicity="*" />
@@ -633,6 +667,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TrainerSchedule_TypeTable">
+          <End Type="FitnessCenterModel.TypeTable" Role="TypeTable" Multiplicity="0..1" />
+          <End Type="FitnessCenterModel.TrainerSchedule" Role="TrainerSchedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeTable">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TrainerSchedule">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_User">
+          <End Type="FitnessCenterModel.User" Role="User" Multiplicity="1" />
+          <End Type="FitnessCenterModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -642,6 +700,8 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="FitnessCenterModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="MemberShipDays" ColumnName="MemberShipDays" />
+                <ScalarProperty Name="EndDateMemberShip" ColumnName="EndDateMemberShip" />
                 <ScalarProperty Name="WorkoutID" ColumnName="WorkoutID" />
                 <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
@@ -671,8 +731,9 @@
           <EntitySetMapping Name="GuestLists">
             <EntityTypeMapping TypeName="FitnessCenterModel.GuestList">
               <MappingFragment StoreEntitySet="GuestList">
-                <ScalarProperty Name="GuestPhone" ColumnName="GuestPhone" />
-                <ScalarProperty Name="GuestName" ColumnName="GuestName" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="GuestLastName" ColumnName="GuestLastName" />
+                <ScalarProperty Name="GuestFirstName" ColumnName="GuestFirstName" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="GuestID" ColumnName="GuestID" />
               </MappingFragment>
@@ -777,8 +838,9 @@
           <EntitySetMapping Name="TrainerSchedules">
             <EntityTypeMapping TypeName="FitnessCenterModel.TrainerSchedule">
               <MappingFragment StoreEntitySet="TrainerSchedule">
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Time" ColumnName="Time" />
                 <ScalarProperty Name="TrainerID" ColumnName="TrainerID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

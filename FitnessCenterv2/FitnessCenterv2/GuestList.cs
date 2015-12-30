@@ -9,17 +9,25 @@
 
 namespace FitnessCenterv2
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    
+    using FitnessCenterv2.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
     public partial class GuestList
     {
+
         public int GuestID { get; set; }
         public Nullable<int> CustomerID { get; set; }
-        [Required,Display(Name="Guest Name")]
-        public string GuestName { get; set; }
-        [Display(Name="Guest Phone")]
-        public string GuestPhone { get; set; }
+        [Required, Display(Name = "Guest First")]
+        public string GuestFirstName { get; set; }
+        [Required, Display(Name = "Guest Last")]
+        public string GuestLastName { get; set; }
+        [Required, 
+        Display(Name = "Date"), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true),
+        CustomDateRange]
+        public Nullable<System.DateTime> Date { get; set; }
+
+        public virtual Customer Customer { get; set; }
     }
 }
